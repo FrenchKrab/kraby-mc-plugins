@@ -1,0 +1,20 @@
+hardcore_respawn:
+    enabled: true
+
+    life: 1
+    food: 4
+    
+    respawn_message: "La haine que votre corps vous voue le maintient en vie. Vous revenez à la vie, faible et affamé."
+
+
+hardcore_regen:
+    enabled: true
+    
+    required_food: 13
+    life_regenerated: 4
+    food_consummed: 7
+
+    #Does the regeneration effect give food when the life is full
+    regeneration_gives_food: true
+    #Does the regeneration effect give saturation when the life and the food is full
+    regeneration_gives_saturation: true

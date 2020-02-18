@@ -1,0 +1,16 @@
+name: DeathKeeper
+main: com.kraby.deathkeeper.MainClass
+version: 1.2
+api-version: 1.14
+depend: [Kurabase]
+description: Spawns deathkeepers on death
+author: Kraby
+commands:
+  dkreload:
+    description: Reloads the DeathKeeper plugin
+    usage: /dkreload
+    permission: deathkeeper.reload
+  ivs:
+    description: (debug) get the inventory size
+    usage: /ivs
+    permission: deathkeeper.ivs
