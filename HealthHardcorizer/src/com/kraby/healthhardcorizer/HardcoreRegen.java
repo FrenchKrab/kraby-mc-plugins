@@ -3,136 +3,61 @@ package com.kraby.healthhardcorizer;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.potion.PotionEffectType;
 
 public class HardcoreRegen {
 	
-	public static void ApplyHardcoreRegen(Player p)
+	private static final double MAX_HEALTH = 20.0d;
+	private static final double HEALTH_OFFSET = 0.15d;	//HP that keeps life from being full, in order to make the regen effect tick.
+	
+	public static double getUnifiedHealth(Player p)
 	{
 		FileConfiguration config = MainHH.config;
-		final double maxHealth = p.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue();
 		
-		if(config.getBoolean("hardcore_regen.enabled") && !p.isDead() && p.getHealth() < maxHealth)
-		{
-			int requiredFood = config.getInt("hardcore_regen.required_food");
-			if(p.getFoodLevel() >= requiredFood)
-			{
-				double lifeRegenerated = config.getDouble("hardcore_regen.life_regenerated");
-				int foodConsummed = config.getInt("hardcore_regen.food_consummed");
-				
-				double neededLifeGain = Math.min(lifeRegenerated, maxHealth - p.getHealth());
-				double foodCost = Math.ceil((neededLifeGain/lifeRegenerated) * foodConsummed);
-				
-				p.setHealth(p.getHealth() + neededLifeGain);
-				p.setFoodLevel(p.getFoodLevel() - (int)foodCost);
-				
-				//in case we have enough food for multiple healing at once
-				ApplyHardcoreRegen(p);
-			}
-		}
+		double uhealth = Math.min(p.getHealth(), MAX_HEALTH - HEALTH_OFFSET);
+
+		int minimumFood = config.getInt("hardcore_regen.minimum_food");
+		double foodPointWorth = config.getDouble("hardcore_regen.food_point_worth");
+		
+		int useableFood = Math.max(0, p.getFoodLevel()-minimumFood);
+		uhealth += useableFood * foodPointWorth;
+		
+		return uhealth;
 	}
 	
 	
-	public static void ApplyExtendedRegenerationOLD(Player p)
+	public static void setUnifiedHealth(Player p, double uhealth)
 	{
-		assert(p.hasPotionEffect(PotionEffectType.REGENERATION));
+		FileConfiguration config = MainHH.config;
+		final double maxHealth = MAX_HEALTH-HEALTH_OFFSET;	//If we set it to 20, the regeneration effect won't tick when the life is full
 		
-		double maxLife = p.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue();
-		float maxSaturation = 20.0f;
-		int maxFood = 20;
+		double uhealthNext = Math.max(0, uhealth-maxHealth);
+		double heartsBar = uhealth - uhealthNext;
+		p.setHealth(Math.max(0.001d, heartsBar));
 		
-		if(MainHH.config.getBoolean("hardcore_regen.debug_messages"))
-			MainHH.singleton.getServer().broadcastMessage("life:" + p.getHealth() + "/" + maxLife + " food:" + p.getFoodLevel() + " saturation:" + p.getSaturation());
+		uhealth = uhealthNext;
 		
-		boolean canHealLife = p.getHealth() < (maxLife - 0.5d);
-		boolean canHealFoodLevel = p.getFoodLevel() < maxFood && MainHH.config.getBoolean("hardcore_regen.regeneration_gives_food");
-		boolean canHealSaturation = p.getSaturation() < maxSaturation && MainHH.config.getBoolean("hardcore_regen.regeneration_gives_saturation");
+	
+		int minimumFood = config.getInt("hardcore_regen.minimum_food");
+		double foodPointWorth = config.getDouble("hardcore_regen.food_point_worth");
 		
-		if(!canHealLife)
-		{
-			if((p.getHealth() == maxLife) && (canHealFoodLevel || canHealSaturation))
-			{
-				p.setHealth(maxLife - 0.1d);
-			}
-			else if(canHealFoodLevel)
-			{
-				p.setFoodLevel(Math.min(p.getFoodLevel() + 1, maxFood));
-			}
-			else if(canHealSaturation)
-			{
-				p.setSaturation(Math.min(p.getSaturation() + 1.0f, maxSaturation));
-			}
-			else
-			{
-				p.setHealth(maxLife);
-			}
-		}
-		else
-		{
-			double maxHealableLife = maxLife;
-			if(canHealFoodLevel || canHealSaturation)
-				maxHealableLife = maxLife - 0.1d;
-			p.setHealth(Math.min(p.getHealth()+1.0d, maxHealableLife));
-		}
+		uhealthNext = Math.max(0, uhealth-(20-minimumFood));
+		int foodBar = minimumFood + (int) ((uhealth - uhealthNext)/foodPointWorth);
+		p.setFoodLevel(foodBar);
 	}
 	
+
 	
-	public static void ApplyExtendedRegeneration(Player p, boolean healFrame)
+	public static double increaseUnifiedHealth(Player p, double amount)
 	{
-		assert(p.hasPotionEffect(PotionEffectType.REGENERATION));
-		
-		double maxLife = p.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue();
-		float maxSaturation = 20.0f;
-		int maxFood = 20;
-		
-
-
-		
-		boolean isLifeFull = (p.getHealth() == maxLife);
-		boolean canHealLife = p.getHealth() < (maxLife - 0.2d);
-		boolean canHealFoodLevel = p.getFoodLevel() < maxFood && MainHH.config.getBoolean("hardcore_regen.regeneration_gives_food");
-		boolean canHealSaturation = p.getSaturation() < maxSaturation && MainHH.config.getBoolean("hardcore_regen.regeneration_gives_saturation");
-		
-		
-		if(MainHH.config.getBoolean("hardcore_regen.debug_messages"))
-		{
-			MainHH.singleton.getServer().broadcastMessage(p.getName() + "]" + p.getHealth() + "/" + maxLife + " food:" + p.getFoodLevel() + " saturation:" + p.getSaturation());
-			MainHH.singleton.getServer().broadcastMessage("we can heal: food=" + canHealFoodLevel + ", saturation=" + canHealSaturation);
-		}
-		
-		
-		if(healFrame)
-		{
-			if(!canHealLife)
-			{
-				if(canHealFoodLevel)
-				{
-					p.setFoodLevel(Math.min(p.getFoodLevel() + 1, maxFood));
-				}
-				else if(canHealSaturation)
-				{
-					p.setSaturation(Math.min(p.getSaturation() + 1.0f, maxSaturation));
-				}
-				else
-				{
-					p.setHealth(maxLife);
-				}
-			}
-			else
-			{
-				double maxHealableLife = maxLife;
-				//if(canHealFoodLevel || canHealSaturation)
-				//	maxHealableLife = maxLife - 0.05d;
-				p.setHealth(Math.min(p.getHealth()+1.0d, maxHealableLife));
-			}
-		}
-
-		
-		if(!healFrame && isLifeFull && (canHealFoodLevel || canHealSaturation))
-		{
-			if(MainHH.config.getBoolean("hardcore_regen.debug_messages"))
-				MainHH.singleton.getServer().broadcastMessage(p.getName() + "] life reduced");
-			p.setHealth(maxLife - 0.05d);
-		}
+		double newValue = Math.max(0, getUnifiedHealth(p) + amount);
+		setUnifiedHealth(p, newValue);
+		return newValue;
+	}
+	
+	public static void updateUnifiedHealth(Player p)
+	{
+		setUnifiedHealth(p, getUnifiedHealth(p));
 	}
 }

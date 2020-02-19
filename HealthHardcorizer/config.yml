@@ -4,7 +4,7 @@ hardcore_respawn:
     life: 1
     food: 4
     
-    respawn_message: "La haine que votre corps vous voue le maintient en vie. Vous revenez Ã  la vie, faible et affamÃ©."
+    respawn_message: "La haine que votre corps vous voue le maintient en vie. Vous revenez à la vie, faible et affamé."
 
 
 hardcore_regen:
@@ -17,4 +17,7 @@ hardcore_regen:
     #Does the regeneration effect give food when the life is full
     regeneration_gives_food: true
     #Does the regeneration effect give saturation when the life and the food is full
-    regeneration_gives_saturation: true
+    regeneration_gives_saturation: false
+
+    debug_messages: false
+    

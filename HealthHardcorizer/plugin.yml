@@ -1,7 +1,7 @@
 name: HealthHardcorizer
 main: com.kraby.healthhardcorizer.MainHH
-version: 1.32
-api-version: 1.14
+version: 2.0
+api-version: 1.15
 depend: [Kurabase]
 description: Edit health and hunger mechanics
 author: Kraby
@@ -11,6 +11,6 @@ commands:
     usage: /hhreload
     permission: healthhardcorizer.reload
   hhinfo:
-    description: Display player info
+    description: (debug) Display player info
     usage: /hhinfo
     permission: healthhardcorizer.info

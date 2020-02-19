@@ -7,26 +7,24 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityPotionEffectEvent;
-import org.bukkit.event.entity.EntityPotionEffectEvent.Action;
 import org.bukkit.event.entity.EntityRegainHealthEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
+import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.entity.EntityRegainHealthEvent.RegainReason;
 import org.bukkit.event.player.PlayerRespawnEvent;
-import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-import com.kraby.deathkeeper.MainClass;
 
 public class HealthHardcorizerListeners implements Listener {
 
 	@EventHandler
 	public void onPlayerRespawn(PlayerRespawnEvent e)
 	{
-		final FileConfiguration config = MainHH.singleton.config;
+		final FileConfiguration config = MainHH.config;
 		if(config.getBoolean("hardcore_respawn.enabled"))
 		{
 			
@@ -48,20 +46,21 @@ public class HealthHardcorizerListeners implements Listener {
 		}
 	}
 	
-	@EventHandler
+
+	@EventHandler(priority = EventPriority.LOWEST)
 	public void onEntityReceiveDamage(EntityDamageEvent e)
 	{
 		if(e.getEntityType() == EntityType.PLAYER)
 		{
 			Player p = (Player)e.getEntity();
-			Bukkit.getScheduler().scheduleSyncDelayedTask(MainHH.singleton, new Runnable() {
-			    @Override
-			    public void run() 
-			    {
-						HardcoreRegen.ApplyHardcoreRegen(p);
-						//HardcoreRegen.ApplyExtendedRegeneration(p, false);
-			    }
-			 });
+			double damages = e.getFinalDamage();
+
+			double newLife = HardcoreRegen.getUnifiedHealth(p)-damages;
+			if (newLife > 0.0)
+			{
+				e.setDamage(0.0);
+				HardcoreRegen.setUnifiedHealth(p, newLife);
+			}
 		}
 	}
 	
@@ -76,8 +75,7 @@ public class HealthHardcorizerListeners implements Listener {
 			    @Override
 			    public void run() 
 			    {
-						HardcoreRegen.ApplyHardcoreRegen(p);
-						//HardcoreRegen.ApplyExtendedRegeneration(p, false);
+			    	HardcoreRegen.updateUnifiedHealth(p);
 			    }
 			 });
 
@@ -88,24 +86,26 @@ public class HealthHardcorizerListeners implements Listener {
 	@EventHandler
 	public void onRegeneration(EntityRegainHealthEvent e)
 	{
-		if(e.getEntityType() == EntityType.PLAYER && (e.getRegainReason() == RegainReason.MAGIC ||
-				e.getRegainReason() == RegainReason.MAGIC_REGEN))
+		RegainReason reason = e.getRegainReason();
+		if(e.getEntityType() == EntityType.PLAYER && (
+				reason != RegainReason.SATIATED))
 		{
 			Player p = ((Player)e.getEntity());
 			double restoredHP = e.getAmount();
 			e.setCancelled(true);
-			//HardcoreRegen.ApplyExtendedRegeneration(p, true);
+
+			HardcoreRegen.increaseUnifiedHealth(p, restoredHP);
 		}
 		
 	}
 	
+
 	@EventHandler
-	public void test(EntityPotionEffectEvent e)
+	public void onPotionEffectApplied(EntityPotionEffectEvent e)
 	{
-		if(e.getEntityType() == EntityType.PLAYER)
+		if(e.getEntityType() == EntityType.PLAYER )
 		{
 			Player p = ((Player)e.getEntity());
-			//HardcoreRegen.ApplyExtendedRegeneration(p, false);
 		}
 	}
 	

@@ -1,22 +1,20 @@
 package com.kraby.deathkeeper;
 
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
-import java.util.Iterator;
 
+import org.bukkit.BanList.Type;
 import org.bukkit.ChatColor;
-import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
+import org.bukkit.Server.Spigot;
 import org.bukkit.Statistic;
-import org.bukkit.attribute.Attribute;
 import org.bukkit.enchantments.Enchantment;
-import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
@@ -36,11 +34,11 @@ import com.kraby.kurabase.tools.InventorySerializer;
 public class DeathKeeperListener implements Listener {
 	
 	
-	@EventHandler
+	@EventHandler(priority = EventPriority.NORMAL)
 	public void onPlayerDie(PlayerDeathEvent e)
 	{
 		Player p = e.getEntity();
-		
+
 		//Deathkeeper spawning
 		if(MainClass.config.getBoolean("deathkeeper.enabled"))
 		{

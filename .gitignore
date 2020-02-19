@@ -1,7 +1,10 @@
 # gitignore stolen from https://gist.github.com/chhh/4961200
 
+# custom, I store buildtools there
+BuildTools/
+
 # not really sure about this one tbh, hopefully it's useless
-.metadata
+.metadata/
 
 #
 # Project specific excludes

@@ -15,7 +15,7 @@ public class ReloadCommand implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 
     	MainHH.singleton.reloadConfig();
-    	MainHH.singleton.config = MainHH.singleton.getConfig();
+    	MainHH.config = MainHH.singleton.getConfig();
     	
     	sender.sendMessage(ChatColor.YELLOW + "HealthHardcorizer reloaded !");
         return true;
