@@ -3,6 +3,7 @@ plugin_enabled: true
 hardcore_respawn:
     enabled: true
 
+    #life & food on respawn
     life: 1
     food: 4
 
@@ -14,7 +15,3 @@ hardcore_regen:
 
     minimum_food: 8         #how much food will be kept in all times
     food_point_worth: 1.0   #how much health points a food point is worth
-
-
-    debug_messages: false
-
