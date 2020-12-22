@@ -8,15 +8,17 @@ import java.util.logging.Logger;
 import com.kraby.mcarcinizer.deathkeeper.DeathKeeperSubplugin;
 import com.kraby.mcarcinizer.deathkeeper.data.DeathKeeperData;
 import com.kraby.mcarcinizer.utils.InventorySerializer;
+import com.kraby.mcarcinizer.utils.config.ConfigAccessor;
 import com.kraby.mcarcinizer.utils.exp4j.ExtendedFunctions;
 import org.bukkit.Statistic;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.Plugin;
 import net.objecthunter.exp4j.Expression;
 import net.objecthunter.exp4j.ExpressionBuilder;
 
-public class DkConfiguration {
+public class DkConfig extends ConfigAccessor {
     private static final String CFG_PLUGIN_ENABLED = "plugin_enabled";
     private static final String CFG_DEATHKEEPER_LVL_EXPR = "deathkeeper.lvl_expr";
     private static final String CFG_DEATHKEEPER_ATTACK_EXPR = "deathkeeper.attack_expr";
@@ -26,10 +28,13 @@ public class DkConfiguration {
     private static final String CFG_DEATHKEEPER_NAME = "deathkeeper.name";
     private static final String CFG_DEATHKEEPER_DEATH_MSG = "deathkeeper.death_message";
 
-    private final FileConfiguration config;
+    public DkConfig(final FileConfiguration config) {
+        super(config);
+    }
 
-    public DkConfiguration(final FileConfiguration config) {
-        this.config = config;
+
+    public DkConfig(Plugin plugin, String configFileName) {
+        super(plugin, configFileName);
     }
 
 

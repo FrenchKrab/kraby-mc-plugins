@@ -3,6 +3,7 @@ package com.kraby.mcarcinizer;
 import java.util.ArrayList;
 import java.util.List;
 import com.kraby.mcarcinizer.deathkeeper.DeathKeeperSubplugin;
+import com.kraby.mcarcinizer.healthhardcorizer.HealthHardcorizerSubplugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
 
@@ -28,6 +29,7 @@ public class CarcinizerMain extends JavaPlugin {
 
     private void initializeSubPlugins() {
         subplugins.add(new DeathKeeperSubplugin(this));
+        subplugins.add(new HealthHardcorizerSubplugin(this));
     }
 
 

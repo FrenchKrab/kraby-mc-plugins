@@ -1,6 +1,6 @@
 package com.kraby.healthhardcorizer;
 
-import java.util.ArrayList;
+import java.net.http.WebSocket.Listener;
 
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -8,15 +8,12 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
-import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityPotionEffectEvent;
 import org.bukkit.event.entity.EntityRegainHealthEvent;
-import org.bukkit.event.entity.FoodLevelChangeEvent;
-import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.entity.EntityRegainHealthEvent.RegainReason;
+import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
-import org.bukkit.potion.PotionEffectType;
 
 
 public class HealthHardcorizerListeners implements Listener {
@@ -27,17 +24,17 @@ public class HealthHardcorizerListeners implements Listener {
 		final FileConfiguration config = MainHH.config;
 		if(config.getBoolean("hardcore_respawn.enabled"))
 		{
-			
+
 			final Player p = e.getPlayer();
-			
+
 			Bukkit.getScheduler().scheduleSyncDelayedTask(MainHH.singleton, new Runnable() {
 			    @Override
-			    public void run() 
+			    public void run()
 			    {
-			    	
+
 					p.setHealth(config.getDouble("hardcore_respawn.life"));
 			    	p.setFoodLevel(config.getInt("hardcore_respawn.food"));
-			    	
+
 			    	p.sendMessage(config.getString("hardcore_respawn.respawn_message"));
 			    }
 			 });
@@ -45,7 +42,7 @@ public class HealthHardcorizerListeners implements Listener {
 
 		}
 	}
-	
+
 
 	@EventHandler(priority = EventPriority.LOWEST)
 	public void onEntityReceiveDamage(EntityDamageEvent e)
@@ -63,8 +60,8 @@ public class HealthHardcorizerListeners implements Listener {
 			}
 		}
 	}
-	
-	
+
+
 	@EventHandler
 	public void onFoodLevelChange(FoodLevelChangeEvent e)
 	{
@@ -73,7 +70,7 @@ public class HealthHardcorizerListeners implements Listener {
 			Player p = (Player)e.getEntity();
 			Bukkit.getScheduler().scheduleSyncDelayedTask(MainHH.singleton, new Runnable() {
 			    @Override
-			    public void run() 
+			    public void run()
 			    {
 			    	HardcoreRegen.updateUnifiedHealth(p);
 			    }
@@ -81,8 +78,8 @@ public class HealthHardcorizerListeners implements Listener {
 
 		}
 	}
-	
-	
+
+
 	@EventHandler
 	public void onRegeneration(EntityRegainHealthEvent e)
 	{
@@ -96,9 +93,9 @@ public class HealthHardcorizerListeners implements Listener {
 
 			HardcoreRegen.increaseUnifiedHealth(p, restoredHP);
 		}
-		
+
 	}
-	
+
 
 	@EventHandler
 	public void onPotionEffectApplied(EntityPotionEffectEvent e)
@@ -108,5 +105,5 @@ public class HealthHardcorizerListeners implements Listener {
 			Player p = ((Player)e.getEntity());
 		}
 	}
-	
+
 }

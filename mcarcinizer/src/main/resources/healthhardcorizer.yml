@@ -1,0 +1,20 @@
+plugin_enabled: true
+
+hardcore_respawn:
+    enabled: true
+
+    life: 1
+    food: 4
+
+    respawn_message: "La haine que votre corps vous voue le maintient en vie. Vous revenez à la vie, faible et affamé."
+
+
+hardcore_regen:
+    enabled: true
+
+    minimum_food: 8         #how much food will be kept in all times
+    food_point_worth: 1.0   #how much health points a food point is worth
+
+
+    debug_messages: false
+

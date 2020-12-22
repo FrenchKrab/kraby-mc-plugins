@@ -1,7 +1,7 @@
 package com.kraby.mcarcinizer.deathkeeper.data;
 
 import com.kraby.mcarcinizer.deathkeeper.DeathKeeperSubplugin;
-import com.kraby.mcarcinizer.deathkeeper.config.DkConfiguration;
+import com.kraby.mcarcinizer.deathkeeper.config.DkConfig;
 import org.bukkit.Location;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.EntityType;
@@ -105,7 +105,7 @@ public class ClassicDkBuilder {
         keeper.setRemoveWhenFarAway(false);
 
 
-        DkConfiguration config = DeathKeeperSubplugin.getSingleton().getDkConfig();
+        DkConfig config = DeathKeeperSubplugin.getSingleton().getDkConfig();
         keeper.setCustomName(config.getDeathKeeperName(keeper));
         keeper.setCustomNameVisible(true);
 

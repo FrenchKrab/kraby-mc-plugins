@@ -2,7 +2,7 @@ package com.kraby.mcarcinizer.deathkeeper.listeners;
 
 import java.util.Arrays;
 import com.kraby.mcarcinizer.deathkeeper.DeathKeeperSubplugin;
-import com.kraby.mcarcinizer.deathkeeper.config.DkConfiguration;
+import com.kraby.mcarcinizer.deathkeeper.config.DkConfig;
 import com.kraby.mcarcinizer.deathkeeper.data.ClassicDkBuilder;
 import com.kraby.mcarcinizer.deathkeeper.data.DeathKeeperData;
 import org.bukkit.Material;
@@ -24,7 +24,7 @@ public class ClassicDkListener implements Listener {
 
     @EventHandler(priority = EventPriority.NORMAL)
     public void onPlayerDie(PlayerDeathEvent e) {
-        DkConfiguration config = DeathKeeperSubplugin.getSingleton().getDkConfig();
+        DkConfig config = DeathKeeperSubplugin.getSingleton().getDkConfig();
         if (!config.isPluginEnabled()) {
             return;
         }
@@ -56,7 +56,7 @@ public class ClassicDkListener implements Listener {
 
     @EventHandler
     public void onEntityDie(EntityDeathEvent e) {
-        DkConfiguration config = DeathKeeperSubplugin.getSingleton().getDkConfig();
+        DkConfig config = DeathKeeperSubplugin.getSingleton().getDkConfig();
         LivingEntity entity = e.getEntity();
 
         if (!config.isPluginEnabled() || !DeathKeeperData.isDeathKeeper(e.getEntity())) {
@@ -82,7 +82,7 @@ public class ClassicDkListener implements Listener {
 
     @EventHandler
     public void onEntityDamage(EntityDamageEvent e) {
-        DkConfiguration config = DeathKeeperSubplugin.getSingleton().getDkConfig();
+        DkConfig config = DeathKeeperSubplugin.getSingleton().getDkConfig();
         if (!config.isPluginEnabled()) {
             return;
         }

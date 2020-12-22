@@ -1,6 +1,6 @@
 name: MCarcinizer
-main: org.kraby.mcarcinizer.CarcinizerMain
-version: 0.1
+main: com.kraby.mcarcinizer.CarcinizerMain
+version: 3.0
 api-version: 1.15
-description: Carcinerizer everything
+description: Carcinerize everything
 author: Kraby

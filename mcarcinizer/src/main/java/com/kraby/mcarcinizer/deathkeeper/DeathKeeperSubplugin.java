@@ -1,13 +1,8 @@
 package com.kraby.mcarcinizer.deathkeeper;
 
-import java.io.File;
-import java.io.IOException;
 import com.kraby.mcarcinizer.Subplugin;
-import com.kraby.mcarcinizer.deathkeeper.config.DkConfiguration;
+import com.kraby.mcarcinizer.deathkeeper.config.DkConfig;
 import com.kraby.mcarcinizer.deathkeeper.listeners.ClassicDkListener;
-import org.bukkit.configuration.InvalidConfigurationException;
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.Plugin;
 
 public class DeathKeeperSubplugin extends Subplugin {
@@ -15,8 +10,7 @@ public class DeathKeeperSubplugin extends Subplugin {
 
     private static DeathKeeperSubplugin singleton;
 
-    private FileConfiguration config;
-    private DkConfiguration dkConfig;
+    private DkConfig dkConfig;
 
     /**
      * Create the subplugin. Should only be created once (singleton) (... not really clean).
@@ -25,33 +19,19 @@ public class DeathKeeperSubplugin extends Subplugin {
     public DeathKeeperSubplugin(Plugin owner) {
         super(owner);
         if (setSingleton(this)) {
-            reloadConfig();
+            reload();
         }
     }
 
     /**
      * Reload this subplugin's config file.
      */
-    public void reloadConfig() {
-        unregisterListeners();
+    public void reload() {
+        unregisterAllListeners();
 
-        File configFile = new File(getOwner().getDataFolder(), CONFIG_FILE_NAME);
-        if (!configFile.exists()) {
-            configFile.getParentFile().mkdirs();
-            getOwner().saveResource(CONFIG_FILE_NAME, false);
-        }
-
-        config = new YamlConfiguration();
-
-        try {
-            config.load(configFile);
-        } catch (IOException | InvalidConfigurationException e) {
-            e.printStackTrace();
-        }
-
-        dkConfig = new DkConfiguration(config);
+        dkConfig = new DkConfig(getOwner(), CONFIG_FILE_NAME);
         if (dkConfig.isPluginEnabled()) {
-            registerListeners();
+            registerAllListeners();
             getOwner().getLogger().info("DeathKeeper subplugin enabled !");
         } else {
             getOwner().getLogger().info("DeathKeeper subplugin disabled...");
@@ -76,12 +56,7 @@ public class DeathKeeperSubplugin extends Subplugin {
         return singleton;
     }
 
-    public DkConfiguration getDkConfig() {
+    public DkConfig getDkConfig() {
         return dkConfig;
     }
-
-    public FileConfiguration getConfig() {
-        return config;
-    }
-
 }

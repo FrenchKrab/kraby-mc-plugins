@@ -26,23 +26,29 @@ public abstract class Subplugin {
     }
 
 
-    protected void unregisterListeners() {
+    protected void unregisterAllListeners() {
         for (Listener l : listeners) {
             HandlerList.unregisterAll(l);
         }
     }
 
-    protected void registerListeners() {
+    /**
+     * Registers all listeners contained in the listeners variable.
+     */
+    protected void registerAllListeners() {
         for (Listener l : listeners) {
             Bukkit.getPluginManager().registerEvents(l, getOwner());
         }
     }
 
+    protected void registerListener(Listener l) {
+        Bukkit.getPluginManager().registerEvents(l, getOwner());
+    }
 
     /**
-     * Reload this subplugin's config.
+     * Reload this subplugin's config, listeners, etc.
      */
-    public abstract void reloadConfig();
+    public abstract void reload();
 
     protected abstract void createListeners();
 }

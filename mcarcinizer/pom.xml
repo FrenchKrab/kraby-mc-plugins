@@ -55,6 +55,7 @@
           <include>plugin.yml</include>
           <include>config.yml</include>
           <include>deathkeeper.yml</include>
+          <include>healthhardcorizer.yml</include>
         </includes>
       </resource>
     </resources>
