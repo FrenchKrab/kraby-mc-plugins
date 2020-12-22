@@ -1,9 +1,9 @@
-package org.kraby.mcarcinizer;
+package com.kraby.mcarcinizer;
 
 import java.util.ArrayList;
 import java.util.List;
+import com.kraby.mcarcinizer.deathkeeper.DeathKeeperSubplugin;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.kraby.mcarcinizer.deathkeeper.DeathKeeperSubplugin;
 
 
 public class CarcinizerMain extends JavaPlugin {

@@ -1,5 +1,7 @@
-package org.kraby.mcarcinizer.deathkeeper.data;
+package com.kraby.mcarcinizer.deathkeeper.data;
 
+import com.kraby.mcarcinizer.deathkeeper.DeathKeeperSubplugin;
+import com.kraby.mcarcinizer.deathkeeper.config.DkConfiguration;
 import org.bukkit.Location;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.EntityType;
@@ -8,8 +10,6 @@ import org.bukkit.inventory.EntityEquipment;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
-import org.kraby.mcarcinizer.deathkeeper.DeathKeeperSubplugin;
-import org.kraby.mcarcinizer.deathkeeper.config.DkConfiguration;
 
 /**
  *  Old/Classic DeathKeeper logic ported to MCarcinizer. To be depecrecated.

@@ -1,6 +1,10 @@
-package org.kraby.mcarcinizer.deathkeeper.listeners;
+package com.kraby.mcarcinizer.deathkeeper.listeners;
 
 import java.util.Arrays;
+import com.kraby.mcarcinizer.deathkeeper.DeathKeeperSubplugin;
+import com.kraby.mcarcinizer.deathkeeper.config.DkConfiguration;
+import com.kraby.mcarcinizer.deathkeeper.data.ClassicDkBuilder;
+import com.kraby.mcarcinizer.deathkeeper.data.DeathKeeperData;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.EntityType;
@@ -14,10 +18,6 @@ import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.inventory.ItemStack;
-import org.kraby.mcarcinizer.deathkeeper.DeathKeeperSubplugin;
-import org.kraby.mcarcinizer.deathkeeper.config.DkConfiguration;
-import org.kraby.mcarcinizer.deathkeeper.data.ClassicDkBuilder;
-import org.kraby.mcarcinizer.deathkeeper.data.DeathKeeperData;
 
 public class ClassicDkListener implements Listener {
 

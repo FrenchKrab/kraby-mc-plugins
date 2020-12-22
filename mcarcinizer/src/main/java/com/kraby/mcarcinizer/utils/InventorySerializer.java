@@ -1,4 +1,4 @@
-package org.kraby.mcarcinizer.utils;
+package com.kraby.mcarcinizer.utils;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;

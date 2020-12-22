@@ -1,18 +1,18 @@
-package org.kraby.mcarcinizer.deathkeeper.config;
+package com.kraby.mcarcinizer.deathkeeper.config;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
+import com.kraby.mcarcinizer.deathkeeper.DeathKeeperSubplugin;
+import com.kraby.mcarcinizer.deathkeeper.data.DeathKeeperData;
+import com.kraby.mcarcinizer.utils.InventorySerializer;
+import com.kraby.mcarcinizer.utils.exp4j.ExtendedFunctions;
 import org.bukkit.Statistic;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
-import org.kraby.mcarcinizer.deathkeeper.DeathKeeperSubplugin;
-import org.kraby.mcarcinizer.deathkeeper.data.DeathKeeperData;
-import org.kraby.mcarcinizer.utils.InventorySerializer;
-import org.kraby.mcarcinizer.utils.exp4j.ExtendedFunctions;
 import net.objecthunter.exp4j.Expression;
 import net.objecthunter.exp4j.ExpressionBuilder;
 

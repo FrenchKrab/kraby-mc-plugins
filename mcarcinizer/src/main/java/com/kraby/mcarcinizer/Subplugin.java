@@ -1,4 +1,4 @@
-package org.kraby.mcarcinizer;
+package com.kraby.mcarcinizer;
 
 import java.util.ArrayList;
 import java.util.List;

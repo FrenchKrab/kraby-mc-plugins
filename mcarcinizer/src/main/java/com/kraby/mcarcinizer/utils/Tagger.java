@@ -1,11 +1,11 @@
-package org.kraby.mcarcinizer.utils;
+package com.kraby.mcarcinizer.utils;
 
+import com.kraby.mcarcinizer.CarcinizerMain;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Entity;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
-import org.kraby.mcarcinizer.CarcinizerMain;
 
 public class Tagger {
     private Tagger() {
