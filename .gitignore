@@ -69,3 +69,6 @@ pom.xml.tag
 *.code-workspace
 # Local History for Visual Studio Code
 .history/
+
+#shading library created file
+mcarcinizer/dependency-reduced-pom.xml
