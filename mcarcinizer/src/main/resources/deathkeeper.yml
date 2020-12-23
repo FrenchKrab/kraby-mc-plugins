@@ -1,0 +1,27 @@
+plugin_enabled: true
+
+deathkeeper:
+  # Availables vars:
+  #   https://hub.spigotmc.org/javadocs/spigot/org/bukkit/Statistic.html
+  #   please note that statistics related to a specific material or entity type won't work
+  # other vars:
+  #   - XP (xp lvl https://minecraft.gamepedia.com/Experience#Leveling_up)
+  #   - INVSIZE (inventory size in bytes*(4/3) (num of chars in base64 representation))
+  # --- INVSIZE EXAMPLES ----
+  # 64 blocs differents; 4488
+  # 1 enchanted sword renamed with 1 char name : 904
+  # 1 enchanted sword renamed with 20 char name: 924
+  lvl_expr: '((XP/1000) + INVSIZE/4488) * 60
+            + (DEATHS^0.5) * 5 * min(TIME_SINCE_DEATH/20/3600, 1)
+            * (DEATHS/(PLAY_ONE_MINUTE/20/3600))'
+
+  # Available var:
+  #   LVL (deathkeeper level)
+  attack_expr: '2 + 0.2 * LVL'
+  hp_expr: '4 + LVL'
+  speed_expr: 'min(0.15 + 0.0025 * LVL, 0.4)'
+
+  name: "{DK_OWNER}'s DeathKeeper Lv.{DK_LEVEL}"
+  death_message: "§e {DK_OWNER}'s Deathkeeper Lv.{DK_LEVEL} §7, spawned the §e{DK_DATE}§7 at §e{DK_HOUR}§7 has been killed !"
+
+  eternalkeeper_lvl: 200

@@ -1,6 +1,0 @@
-name: Kurabase
-main: com.kraby.kurabase.KurabaseMain
-version: 1.0
-api-version: 1.15
-description: Base plugin for Kraby's plugins, containing useful stuff
-author: Kraby

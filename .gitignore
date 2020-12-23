@@ -1,4 +1,5 @@
 # gitignore stolen from https://gist.github.com/chhh/4961200
+# also improved with other stuff
 
 # custom, I store buildtools there
 BuildTools/
@@ -30,10 +31,10 @@ tomcat
 *.sar
 *.class
 
-# Maven 
+# Maven
 target/
 
-# IntelliJ project files 
+# IntelliJ project files
 *.iml
 *.iws
 *.ipr
@@ -62,3 +63,12 @@ nb-configuration.xml
 release.properties
 pom.xml.releaseBackup
 pom.xml.tag
+
+# VSCode specific
+.vscode/*
+*.code-workspace
+# Local History for Visual Studio Code
+.history/
+
+#shading library created file
+mcarcinizer/dependency-reduced-pom.xml
