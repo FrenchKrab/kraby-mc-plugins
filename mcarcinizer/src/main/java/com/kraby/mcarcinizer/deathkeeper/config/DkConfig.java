@@ -2,21 +2,17 @@ package com.kraby.mcarcinizer.deathkeeper.config;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.logging.Logger;
+import com.kraby.mcarcinizer.carcinizer.expressions.ExpressionEvaluator;
+import com.kraby.mcarcinizer.carcinizer.expressions.exp4j.Exp4jEvaluator;
+import com.kraby.mcarcinizer.carcinizer.expressions.variables.PlayerVariables;
 import com.kraby.mcarcinizer.deathkeeper.DeathKeeperSubplugin;
 import com.kraby.mcarcinizer.deathkeeper.data.DeathKeeperData;
-import com.kraby.mcarcinizer.utils.InventorySerializer;
 import com.kraby.mcarcinizer.utils.config.ConfigAccessor;
-import com.kraby.mcarcinizer.utils.exp4j.ExtendedFunctions;
-import org.bukkit.Statistic;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
-import net.objecthunter.exp4j.Expression;
-import net.objecthunter.exp4j.ExpressionBuilder;
 
 public class DkConfig extends ConfigAccessor {
     private static final String CFG_PLUGIN_ENABLED = "plugin_enabled";
@@ -27,6 +23,8 @@ public class DkConfig extends ConfigAccessor {
     private static final String CFG_DEATHKEEPER_ETERNAL_LVL = "deathkeeper.eternalkeeper_lvl";
     private static final String CFG_DEATHKEEPER_NAME = "deathkeeper.name";
     private static final String CFG_DEATHKEEPER_DEATH_MSG = "deathkeeper.death_message";
+    private static final String CFG_BAN_ON_DEATH = "deathkeeper.ban_on_death";
+    private static final String CFG_DEATH_BAN_EXPR = "deathkeeper.death_ban_expr";
 
     public DkConfig(final FileConfiguration config) {
         super(config);
@@ -48,38 +46,16 @@ public class DkConfig extends ConfigAccessor {
      * @return
      */
     public double getDeathKeeperLevel(final Player p) {
-        Map<String, Double> variables = new HashMap<>();
-
-        // put all stats
-        for (Statistic s : Statistic.values()) {
-            try {
-                variables.put(s.name(), Double.valueOf(p.getStatistic(s)));
-            } catch (Exception e) {
-                // Statistic that requires arguments (mob type, material, etc)
-            }
-        }
-        // put xp
-        variables.put("XP", Double.valueOf(p.getTotalExperience()));
-        // put invsize
-        String serializedInventory = InventorySerializer
-            .itemStackArrayToBase64(p.getInventory().getContents());
-        variables.put("INVSIZE", Double.valueOf(serializedInventory.length()));
-
-        //build expr
         String exprString = config.getString(CFG_DEATHKEEPER_LVL_EXPR, "0");
-        Expression lvlExpr = new ExpressionBuilder(exprString)
-            .functions(ExtendedFunctions.getAllFunctions())
-            .variables(variables.keySet())
-            .build();
-        lvlExpr.setVariables(variables);
+        ExpressionEvaluator evaluator = new Exp4jEvaluator(exprString);
+        evaluator.setVariables(new PlayerVariables(p));
 
-        if (!lvlExpr.validate().isValid()) {
-            logExprErrors(lvlExpr);
-            return 0.0f;
+        if (!evaluator.isValid()) {
+            logExprErrors(evaluator);
+            return 0.0;
         }
 
-        //evaluate
-        return lvlExpr.evaluate();
+        return evaluator.evaluate();
     }
 
     public double getDeathKeeperAttack(double level) {
@@ -136,28 +112,54 @@ public class DkConfig extends ConfigAccessor {
         return config.getInt(CFG_DEATHKEEPER_ETERNAL_LVL, Integer.MAX_VALUE);
     }
 
-    private double getLevelDependantExpr(String var, double level) {
-        //build expr
-        String exprString = config.getString(var, "0");
-        Expression lvlExpr = new ExpressionBuilder(exprString)
-            .functions(ExtendedFunctions.getAllFunctions())
-            .variable("LVL")
-            .build();
-        lvlExpr.setVariable("LVL", level);
-
-        if (!lvlExpr.validate().isValid()) {
-            logExprErrors(lvlExpr);
-            return 0.0f;
-        }
-
-        //evaluate
-        return lvlExpr.evaluate();
+    public boolean isBanOnDeathEnabled() {
+        return config.getBoolean(CFG_BAN_ON_DEATH, false);
     }
 
-    private void logExprErrors(Expression expr) {
+    /**
+     * Get ban time on death (in seconds).
+     * @param p
+     * @param deathKeeperLevel
+     * @return
+     */
+    public double getDeathBanTime(Player p, double deathKeeperLevel) {
+        String exprString = config.getString(CFG_DEATH_BAN_EXPR, "0");
+        ExpressionEvaluator evaluator = new Exp4jEvaluator(exprString);
+        evaluator.setVariables(new PlayerVariables(p));
+        evaluator.setVariable("DK_LVL", deathKeeperLevel);
+
+        if (!evaluator.isValid()) {
+            logExprErrors(evaluator);
+            return 0.0;
+        }
+
+        return evaluator.evaluate();
+    }
+
+    /**
+     * Evaluate an expression. Only available var is LVL.
+     * @param var
+     * @param level
+     * @return
+     */
+    private double getLevelDependantExpr(String var, double level) {
+        String exprString = config.getString(var, "0");
+        ExpressionEvaluator evaluator = new Exp4jEvaluator(exprString);
+        evaluator.setVariable("LVL", level);
+
+        if (!evaluator.isValid()) {
+            logExprErrors(evaluator);
+            return 0.0;
+        }
+
+        return evaluator.evaluate();
+    }
+
+
+    private void logExprErrors(ExpressionEvaluator expr) {
         Logger logger = DeathKeeperSubplugin.getSingleton().getOwner().getLogger();
-        logger.info(String.format("Invalid expr:%n%s%nproblems:", expr.toString()));
-        for (String err : expr.validate().getErrors()) {
+        logger.warning(String.format("Invalid expr:%n%s%nproblems:", expr.toString()));
+        for (String err : expr.getErrors()) {
             logger.info(String.format("%n- %s", err));
         }
     }

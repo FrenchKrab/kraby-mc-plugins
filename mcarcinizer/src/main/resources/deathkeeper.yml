@@ -25,3 +25,9 @@ deathkeeper:
   death_message: "§e{DK_OWNER}'s Deathkeeper Lv.{DK_LEVEL} §7, spawned the §e{DK_DATE}§7 at §e{DK_HOUR}§7 has been killed !"
 
   eternalkeeper_lvl: 200
+
+  #Is the player (temporarly) banned after dying ?
+  ban_on_death: true
+  # Time to ban the player after dying (in seconds)
+  # Stats available, aswell as INVSIZE, XP and DK_LVL
+  death_ban_expr: '(5 + 40*log(DK_LVL+1)) + (1200 - 2*(TIME_SINCE_DEATH/20))'

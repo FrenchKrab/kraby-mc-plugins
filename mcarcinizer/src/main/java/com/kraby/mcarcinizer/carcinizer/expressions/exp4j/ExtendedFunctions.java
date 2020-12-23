@@ -1,4 +1,4 @@
-package com.kraby.mcarcinizer.utils.exp4j;
+package com.kraby.mcarcinizer.carcinizer.expressions.exp4j;
 
 import java.util.ArrayList;
 import java.util.List;

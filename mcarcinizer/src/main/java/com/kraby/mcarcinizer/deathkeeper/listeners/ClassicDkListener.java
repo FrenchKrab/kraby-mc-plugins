@@ -1,11 +1,15 @@
 package com.kraby.mcarcinizer.deathkeeper.listeners;
 
+import java.time.Instant;
 import java.util.Arrays;
+import java.util.Date;
 import com.kraby.mcarcinizer.deathkeeper.DeathKeeperSubplugin;
 import com.kraby.mcarcinizer.deathkeeper.config.DkConfig;
 import com.kraby.mcarcinizer.deathkeeper.data.ClassicDkBuilder;
 import com.kraby.mcarcinizer.deathkeeper.data.DeathKeeperData;
+import org.bukkit.BanList;
 import org.bukkit.Material;
+import org.bukkit.BanList.Type;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
@@ -24,18 +28,19 @@ public class ClassicDkListener implements Listener {
 
     @EventHandler(priority = EventPriority.NORMAL)
     public void onPlayerDie(PlayerDeathEvent e) {
-        final DkConfig config = DeathKeeperSubplugin.getSingleton().getDkConfig();
+        final DeathKeeperSubplugin singleton = DeathKeeperSubplugin.getSingleton();
+        final DkConfig config = singleton.getDkConfig();
 
         //Deathkeeper spawning
-        Player p = e.getEntity();
+        final Player p = e.getEntity();
 
-        ItemStack[] inventory = e.getDrops().toArray(new ItemStack[0]);
+        final ItemStack[] inventory = e.getDrops().toArray(new ItemStack[0]);
 
-        double deathKeeperLevel = Math.ceil(config.getDeathKeeperLevel(p));
+        final double deathKeeperLevel = Math.ceil(config.getDeathKeeperLevel(p));
 
-        double newLife = config.getDeathKeeperHp(deathKeeperLevel);
-        double attack = config.getDeathKeeperAttack(deathKeeperLevel);
-        double speed = config.getDeathKeeperSpeed(deathKeeperLevel);
+        final double newLife = config.getDeathKeeperHp(deathKeeperLevel);
+        final double attack = config.getDeathKeeperAttack(deathKeeperLevel);
+        final double speed = config.getDeathKeeperSpeed(deathKeeperLevel);
 
         new ClassicDkBuilder()
             .withArmor(p.getEquipment().getArmorContents())
@@ -48,6 +53,20 @@ public class ClassicDkListener implements Listener {
             .spawnAt(EntityType.WITHER_SKELETON, p.getLocation());
 
         e.getDrops().clear();
+
+        //ban
+        if (config.isBanOnDeathEnabled()) {
+            final double banTime = config.getDeathBanTime(p, deathKeeperLevel);
+            Instant expireInstant = Instant.now().plusSeconds((long) banTime);
+            final BanList banlist = singleton.getOwner().getServer().getBanList(Type.NAME);
+            banlist.addBan(
+                p.getName(),
+                e.getDeathMessage(),
+                Date.from(expireInstant),
+                "deathkeeper");
+            p.kickPlayer(e.getDeathMessage());
+
+        }
     }
 
 
