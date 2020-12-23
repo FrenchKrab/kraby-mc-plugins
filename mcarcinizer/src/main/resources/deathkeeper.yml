@@ -22,6 +22,6 @@ deathkeeper:
   speed_expr: 'min(0.15 + 0.0025 * LVL, 0.4)'
 
   name: "{DK_OWNER}'s DeathKeeper Lv.{DK_LEVEL}"
-  death_message: "§e {DK_OWNER}'s Deathkeeper Lv.{DK_LEVEL} §7, spawned the §e{DK_DATE}§7 at §e{DK_HOUR}§7 has been killed !"
+  death_message: "§e{DK_OWNER}'s Deathkeeper Lv.{DK_LEVEL} §7, spawned the §e{DK_DATE}§7 at §e{DK_HOUR}§7 has been killed !"
 
   eternalkeeper_lvl: 200

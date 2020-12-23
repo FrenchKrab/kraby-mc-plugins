@@ -24,10 +24,7 @@ public class ClassicDkListener implements Listener {
 
     @EventHandler(priority = EventPriority.NORMAL)
     public void onPlayerDie(PlayerDeathEvent e) {
-        DkConfig config = DeathKeeperSubplugin.getSingleton().getDkConfig();
-        if (!config.isPluginEnabled()) {
-            return;
-        }
+        final DkConfig config = DeathKeeperSubplugin.getSingleton().getDkConfig();
 
         //Deathkeeper spawning
         Player p = e.getEntity();
@@ -56,10 +53,10 @@ public class ClassicDkListener implements Listener {
 
     @EventHandler
     public void onEntityDie(EntityDeathEvent e) {
-        DkConfig config = DeathKeeperSubplugin.getSingleton().getDkConfig();
-        LivingEntity entity = e.getEntity();
+        final DkConfig config = DeathKeeperSubplugin.getSingleton().getDkConfig();
+        final LivingEntity entity = e.getEntity();
 
-        if (!config.isPluginEnabled() || !DeathKeeperData.isDeathKeeper(e.getEntity())) {
+        if (!DeathKeeperData.isDeathKeeper(e.getEntity())) {
             return;
         }
 
@@ -82,7 +79,7 @@ public class ClassicDkListener implements Listener {
 
     @EventHandler
     public void onEntityDamage(EntityDamageEvent e) {
-        DkConfig config = DeathKeeperSubplugin.getSingleton().getDkConfig();
+        final DkConfig config = DeathKeeperSubplugin.getSingleton().getDkConfig();
         if (!config.isPluginEnabled()) {
             return;
         }
