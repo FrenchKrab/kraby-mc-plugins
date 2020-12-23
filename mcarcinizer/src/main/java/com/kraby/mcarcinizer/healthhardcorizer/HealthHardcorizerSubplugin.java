@@ -42,14 +42,20 @@ public class HealthHardcorizerSubplugin extends Subplugin  {
         respawnConfig = new RespawnConfig(getOwner(), CONFIG_FILE_NAME);
 
         if (generalConfig.isPluginEnabled()) {
+            int enabledSubmodules = 0;
             if (regenConfig.isEnabled()) {
                 registerListener(regenListener);
+                enabledSubmodules++;
             }
             if (respawnConfig.isEnabled()) {
                 registerListener(respawnListener);
+                enabledSubmodules++;
             }
 
-            getOwner().getLogger().info("HealthHardcorizer subplugin enabled !");
+            getOwner().getLogger().info(
+                String.format("HealthHardcorizer subplugin enabled ! [%d/%d modules]",
+                enabledSubmodules,
+                listeners.size()));
         } else {
             getOwner().getLogger().info("HealthHardcorizer subplugin disabled...");
         }

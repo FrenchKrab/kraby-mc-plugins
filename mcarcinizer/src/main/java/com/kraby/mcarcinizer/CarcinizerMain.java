@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import com.kraby.mcarcinizer.deathkeeper.DeathKeeperSubplugin;
 import com.kraby.mcarcinizer.healthhardcorizer.HealthHardcorizerSubplugin;
+import com.kraby.mcarcinizer.mcarcinizer.commands.ReloadCommand;
 import org.bukkit.plugin.java.JavaPlugin;
 
 
@@ -17,6 +18,7 @@ public class CarcinizerMain extends JavaPlugin {
         super.onEnable();
         setSingleton(this);
         initializeSubPlugins();
+        registerCommands();
     }
 
 
@@ -25,11 +27,22 @@ public class CarcinizerMain extends JavaPlugin {
         //
     }
 
-
+    /**
+     * Calls the reload method on all subplugins.
+     */
+    public void reloadSubplugin() {
+        for (Subplugin subplugin : subplugins) {
+            subplugin.reload();
+        }
+    }
 
     private void initializeSubPlugins() {
         subplugins.add(new DeathKeeperSubplugin(this));
         subplugins.add(new HealthHardcorizerSubplugin(this));
+    }
+
+    private void registerCommands() {
+        this.getCommand("carcreload").setExecutor(new ReloadCommand());
     }
 
 

@@ -4,3 +4,8 @@ version: 3.0
 api-version: 1.15
 description: Carcinerize everything
 author: Kraby
+commands:
+  carcreload:
+    description: Reloads all MCarcinizer subplugins.
+    usage: /carcreload
+    permission: carc.reload
