@@ -38,7 +38,7 @@ public class ExtendedFunctions {
      * @return
      */
     public static Function getMax() {
-        return new Function("max") {
+        return new Function("max", 2) {
             @Override
             public double apply(double... args) {
                 return args[0] > args[1] ? args[0] : args[1];
