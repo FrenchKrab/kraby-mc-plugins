@@ -3,11 +3,13 @@ package com.kraby.mcarcinizer.deathkeeper.listeners;
 import java.time.Instant;
 import java.util.Arrays;
 import java.util.Date;
+import com.kraby.mcarcinizer.CarcinizerMain;
 import com.kraby.mcarcinizer.deathkeeper.DeathKeeperSubplugin;
 import com.kraby.mcarcinizer.deathkeeper.config.DkConfig;
 import com.kraby.mcarcinizer.deathkeeper.data.ClassicDkBuilder;
 import com.kraby.mcarcinizer.deathkeeper.data.DeathKeeperData;
 import org.bukkit.BanList;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.BanList.Type;
 import org.bukkit.enchantments.Enchantment;
@@ -22,6 +24,7 @@ import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.scheduler.BukkitScheduler;
 
 public class ClassicDkListener implements Listener {
 
@@ -64,8 +67,10 @@ public class ClassicDkListener implements Listener {
                 e.getDeathMessage(),
                 Date.from(expireInstant),
                 "deathkeeper");
-            p.kickPlayer(e.getDeathMessage());
 
+            Bukkit.getScheduler().runTask(
+                CarcinizerMain.getSingleton(),
+                () -> p.kickPlayer(e.getDeathMessage()));
         }
     }
 
