@@ -53,8 +53,6 @@ public class Exp4jEvaluator implements ExpressionEvaluator {
 
     private Expression getExpression() {
         Logger logger = DeathKeeperSubplugin.getSingleton().getOwner().getLogger();
-        logger.info("before getExpression, KEYS:" + variables.keySet().size());
-        logger.info(String.join(";", variables.keySet()));
         return builder.variables(variables.keySet()).build().setVariables(variables);
     }
 
