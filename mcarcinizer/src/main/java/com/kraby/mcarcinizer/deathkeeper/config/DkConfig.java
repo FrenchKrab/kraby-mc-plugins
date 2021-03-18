@@ -58,14 +58,30 @@ public class DkConfig extends ConfigAccessor {
         return Math.max(0, evaluator.evaluate());
     }
 
+    /**
+     * Get the Deathkeeper's attack at a given level.
+     * @param level
+     * @return
+     */
     public double getDeathKeeperAttack(double level) {
         return getLevelDependantExpr(CFG_DEATHKEEPER_ATTACK_EXPR, level, false);
     }
 
+
+    /**
+     * Get the Deathkeeper's HP at a given level.
+     * @param level
+     * @return
+     */
     public double getDeathKeeperHp(double level) {
         return getLevelDependantExpr(CFG_DEATHKEEPER_HP_EXPR, level, false);
     }
 
+    /**
+     * Get the Deathkeeper's speed at a given level.
+     * @param level
+     * @return
+     */
     public double getDeathKeeperSpeed(double level) {
         return getLevelDependantExpr(CFG_DEATHKEEPER_SPEED_EXPR, level, false);
     }
