@@ -41,7 +41,7 @@ public class DkConfig extends ConfigAccessor {
     }
 
     /**
-     * Get the player's deathkeeper's level.
+     * Get the player's deathkeeper's level. (always > 0)
      * @param p
      * @return
      */
@@ -55,19 +55,35 @@ public class DkConfig extends ConfigAccessor {
             return 0.0;
         }
 
-        return evaluator.evaluate();
+        return Math.max(0, evaluator.evaluate());
     }
 
+    /**
+     * Get the Deathkeeper's attack at a given level.
+     * @param level
+     * @return
+     */
     public double getDeathKeeperAttack(double level) {
-        return getLevelDependantExpr(CFG_DEATHKEEPER_ATTACK_EXPR, level);
+        return getLevelDependantExpr(CFG_DEATHKEEPER_ATTACK_EXPR, level, false);
     }
 
+
+    /**
+     * Get the Deathkeeper's HP at a given level.
+     * @param level
+     * @return
+     */
     public double getDeathKeeperHp(double level) {
-        return getLevelDependantExpr(CFG_DEATHKEEPER_HP_EXPR, level);
+        return getLevelDependantExpr(CFG_DEATHKEEPER_HP_EXPR, level, false);
     }
 
+    /**
+     * Get the Deathkeeper's speed at a given level.
+     * @param level
+     * @return
+     */
     public double getDeathKeeperSpeed(double level) {
-        return getLevelDependantExpr(CFG_DEATHKEEPER_SPEED_EXPR, level);
+        return getLevelDependantExpr(CFG_DEATHKEEPER_SPEED_EXPR, level, false);
     }
 
     /**
@@ -133,7 +149,7 @@ public class DkConfig extends ConfigAccessor {
             return 0.0;
         }
 
-        return evaluator.evaluate();
+        return Math.max(0, evaluator.evaluate());
     }
 
     /**
@@ -142,7 +158,7 @@ public class DkConfig extends ConfigAccessor {
      * @param level
      * @return
      */
-    private double getLevelDependantExpr(String var, double level) {
+    private double getLevelDependantExpr(String var, double level, boolean allowNegatives) {
         String exprString = config.getString(var, "0");
         ExpressionEvaluator evaluator = new Exp4jEvaluator(exprString);
         evaluator.setVariable("LVL", level);
@@ -152,7 +168,12 @@ public class DkConfig extends ConfigAccessor {
             return 0.0;
         }
 
-        return evaluator.evaluate();
+        double result = evaluator.evaluate();
+        if (!allowNegatives) {
+            result = Math.max(0, result);
+        }
+
+        return result;
     }
 
 
