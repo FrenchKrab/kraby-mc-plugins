@@ -60,17 +60,20 @@ public class ClassicDkListener implements Listener {
         //ban
         if (config.isBanOnDeathEnabled()) {
             final double banTime = config.getDeathBanTime(p, deathKeeperLevel);
-            Instant expireInstant = Instant.now().plusSeconds((long) banTime);
-            final BanList banlist = singleton.getOwner().getServer().getBanList(Type.NAME);
-            banlist.addBan(
-                p.getName(),
-                e.getDeathMessage(),
-                Date.from(expireInstant),
-                "deathkeeper");
 
-            Bukkit.getScheduler().runTask(
-                CarcinizerMain.getSingleton(),
-                () -> p.kickPlayer(e.getDeathMessage()));
+            if (banTime > 0) {
+                Instant expireInstant = Instant.now().plusSeconds((long) banTime);
+                final BanList banlist = singleton.getOwner().getServer().getBanList(Type.NAME);
+                banlist.addBan(
+                    p.getName(),
+                    e.getDeathMessage(),
+                    Date.from(expireInstant),
+                    "deathkeeper");
+
+                Bukkit.getScheduler().runTask(
+                    CarcinizerMain.getSingleton(),
+                    () -> p.kickPlayer(e.getDeathMessage()));
+            }
         }
     }
 
