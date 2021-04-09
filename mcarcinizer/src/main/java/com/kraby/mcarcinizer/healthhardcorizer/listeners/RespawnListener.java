@@ -20,6 +20,10 @@ public class RespawnListener implements Listener {
         }
 
         final Player p = e.getPlayer();
+        // If the player is NOT dead ! (teleporting back from The End is very common)
+        if (p.getHealth() > 0.0) {
+            return;
+        }
 
         Plugin plugin = HealthHardcorizerSubplugin.getSingleton().getOwner();
         Bukkit.getScheduler().scheduleSyncDelayedTask(plugin,
