@@ -15,6 +15,9 @@ public class RespawnListener implements Listener {
     @EventHandler
     public void onPlayerRespawn(PlayerRespawnEvent e) {
         final RespawnConfig config = HealthHardcorizerSubplugin.getSingleton().getRespawnConfig();
+        if (!config.isEnabled()) {
+            return;
+        }
 
         final Player p = e.getPlayer();
 
