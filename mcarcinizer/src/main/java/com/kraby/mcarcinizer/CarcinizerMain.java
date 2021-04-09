@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import com.kraby.mcarcinizer.deathkeeper.DeathKeeperSubplugin;
 import com.kraby.mcarcinizer.healthhardcorizer.HealthHardcorizerSubplugin;
+import com.kraby.mcarcinizer.mcarcinizer.commands.InvSizeCommand;
 import com.kraby.mcarcinizer.mcarcinizer.commands.ReloadCommand;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -43,6 +44,7 @@ public class CarcinizerMain extends JavaPlugin {
 
     private void registerCommands() {
         this.getCommand("carcreload").setExecutor(new ReloadCommand());
+        this.getCommand("invsize").setExecutor(new InvSizeCommand());
     }
 
 

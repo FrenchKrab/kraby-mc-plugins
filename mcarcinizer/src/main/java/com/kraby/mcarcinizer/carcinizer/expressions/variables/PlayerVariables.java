@@ -32,7 +32,7 @@ public class PlayerVariables extends HashMap<String, Double> {
         return variables;
     }
 
-    private static double getInvSizeValue(Inventory inv) {
+    public static double getInvSizeValue(Inventory inv) {
         return InventorySerializer.itemStackArrayToBase64(inv.getContents()).length();
     }
 }

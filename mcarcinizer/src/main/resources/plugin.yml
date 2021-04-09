@@ -9,3 +9,7 @@ commands:
     description: Reloads all MCarcinizer subplugins.
     usage: /carcreload
     permission: carc.reload
+  invsize:
+    description: View inventory size (useful for config balancing)
+    usage: /invsize
+    permission: carc.invsize
