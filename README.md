@@ -15,4 +15,9 @@ Default config file:
 [mcarcinizer/src/main/resources/healthhardcorizer.yml](mcarcinizer/src/main/resources/healthhardcorizer.yml)
 
 # How to build the project
-(to do)
+
+Clone this repository and run
+```
+mvn package
+```
+inside the mcarcinizer/ folder.
