@@ -8,6 +8,8 @@ import com.kraby.mcarcinizer.deathkeeper.DeathKeeperSubplugin;
 import java.util.List;
 import net.objecthunter.exp4j.Expression;
 import net.objecthunter.exp4j.ExpressionBuilder;
+import net.objecthunter.exp4j.ValidationResult;
+import net.objecthunter.exp4j.tokenizer.UnknownFunctionOrVariableException;
 
 public class Exp4jEvaluator implements ExpressionEvaluator {
 
@@ -23,21 +25,35 @@ public class Exp4jEvaluator implements ExpressionEvaluator {
     @Override
     public void setVariable(String name, Double value) {
         variables.put(name, value);
+        builder.variable(name);
     }
 
     @Override
     public void setVariables(Map<String, Double> vars) {
         variables.putAll(vars);
+        builder.variables(variables.keySet());
     }
 
     @Override
     public boolean isValid() {
-        return getExpression().validate().getErrors() == null;
+        try {
+            Expression e = builder.build();
+            ValidationResult res = e.validate(false);
+            return res.isValid();
+        } catch (Exception e) {
+            return false;
+        }
     }
 
     @Override
     public List<String> getErrors() {
-        return getExpression().validate().getErrors();
+        try {
+            Expression e = builder.build();
+            ValidationResult res = e.validate();
+            return res.getErrors();
+        } catch (UnknownFunctionOrVariableException e) {
+            return List.of(e.getMessage());
+        }
     }
 
     @Override
@@ -52,8 +68,7 @@ public class Exp4jEvaluator implements ExpressionEvaluator {
 
 
     private Expression getExpression() {
-        Logger logger = DeathKeeperSubplugin.getSingleton().getOwner().getLogger();
-        return builder.variables(variables.keySet()).build().setVariables(variables);
+        return builder.build().setVariables(variables);
     }
 
 }
