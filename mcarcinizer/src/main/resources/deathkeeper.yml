@@ -16,7 +16,7 @@ deathkeeper:
             * (DEATHS/(PLAY_ONE_MINUTE/20/3600))'
 
   # Available var:
-  #   LVL (deathkeeper level)
+  #   DK_LVL (deathkeeper level)
   attack_expr: '2 + 0.2 * DK_LVL'
   hp_expr: '4 + DK_LVL'
   speed_expr: 'min(0.15 + 0.0025 * DK_LVL, 0.4)'
