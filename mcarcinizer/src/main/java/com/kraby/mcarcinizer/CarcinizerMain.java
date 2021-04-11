@@ -26,6 +26,7 @@ public class CarcinizerMain extends JavaPlugin {
         setSingleton(this);
         initializeSubPlugins();
         registerCommands();
+        checkForErrors();
     }
 
 
@@ -48,6 +49,7 @@ public class CarcinizerMain extends JavaPlugin {
     }
 
     private void initializeSubPlugins() {
+        subplugins.clear();
         subplugins.add(new DeathKeeperSubplugin(this));
         subplugins.add(new HealthHardcorizerSubplugin(this));
     }
@@ -55,6 +57,7 @@ public class CarcinizerMain extends JavaPlugin {
     private void registerCommands() {
         this.getCommand("carcreload").setExecutor(new ReloadCommand());
         this.getCommand("invsize").setExecutor(new InvSizeCommand());
+        this.getCommand("carcchkcfg").setExecutor(new CheckConfigCommand());
     }
 
 
@@ -73,6 +76,11 @@ public class CarcinizerMain extends JavaPlugin {
             }
         }
         return errors;
+    }
+
+    private void checkForErrors() {
+        List<String> configErrors = getConfigErrors();
+        InfoLogs.warnIfConfigsContainErrors(Bukkit.getConsoleSender(), configErrors.size());
     }
 
 

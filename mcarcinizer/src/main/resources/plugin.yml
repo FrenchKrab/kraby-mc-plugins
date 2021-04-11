@@ -13,3 +13,7 @@ commands:
     description: View inventory size (useful for config balancing)
     usage: /invsize
     permission: carc.invsize
+  carcchkcfg:
+    description: Checks all MCarcinizer config files for errors.
+    usage: /carcchkcfg
+    permission: carc.carcchkcfg
