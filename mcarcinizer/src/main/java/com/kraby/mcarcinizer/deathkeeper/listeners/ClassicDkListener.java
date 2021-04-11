@@ -13,6 +13,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.BanList.Type;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -113,7 +114,14 @@ public class ClassicDkListener implements Listener {
             return;
         }
 
-        if (e.getCause() == DamageCause.SUFFOCATION) {
+        final Entity entity = e.getEntity();
+        final DamageCause cause = e.getCause();
+
+        if (DeathKeeperData.isDeathKeeper(entity)
+                && (cause == DamageCause.SUFFOCATION
+                || cause == DamageCause.LAVA
+                || cause == DamageCause.FALL
+                || cause == DamageCause.DROWNING)) {
             e.setCancelled(true);
         }
     }
