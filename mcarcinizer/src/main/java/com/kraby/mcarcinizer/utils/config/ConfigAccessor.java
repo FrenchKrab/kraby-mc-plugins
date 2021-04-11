@@ -2,6 +2,8 @@ package com.kraby.mcarcinizer.utils.config;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -40,5 +42,13 @@ public abstract class ConfigAccessor {
         }
 
         return config;
+    }
+
+    /**
+     * Get errors detected in this config file.
+     * @return Textual descriptions of the errors.
+     */
+    public List<String> getErrors() {
+        return new ArrayList<>();
     }
 }

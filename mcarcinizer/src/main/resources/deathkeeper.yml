@@ -17,9 +17,9 @@ deathkeeper:
 
   # Available var:
   #   LVL (deathkeeper level)
-  attack_expr: '2 + 0.2 * LVL'
-  hp_expr: '4 + LVL'
-  speed_expr: 'min(0.15 + 0.0025 * LVL, 0.4)'
+  attack_expr: '2 + 0.2 * DK_LVL'
+  hp_expr: '4 + DK_LVL'
+  speed_expr: 'min(0.15 + 0.0025 * DK_LVL, 0.4)'
 
   name: "{DK_OWNER}'s DeathKeeper Lv.{DK_LEVEL}"
   death_message: "§e{DK_OWNER}'s Deathkeeper Lv.{DK_LEVEL} §7, spawned the §e{DK_DATE}§7 at §e{DK_HOUR}§7 has been killed !"

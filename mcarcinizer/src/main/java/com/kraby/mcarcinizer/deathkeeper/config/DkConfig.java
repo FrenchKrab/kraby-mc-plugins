@@ -2,6 +2,7 @@ package com.kraby.mcarcinizer.deathkeeper.config;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.logging.Logger;
 import com.kraby.mcarcinizer.carcinizer.expressions.ExpressionEvaluator;
 import com.kraby.mcarcinizer.carcinizer.expressions.exp4j.Exp4jEvaluator;
@@ -9,6 +10,7 @@ import com.kraby.mcarcinizer.carcinizer.expressions.variables.PlayerVariables;
 import com.kraby.mcarcinizer.deathkeeper.DeathKeeperSubplugin;
 import com.kraby.mcarcinizer.deathkeeper.data.DeathKeeperData;
 import com.kraby.mcarcinizer.utils.config.ConfigAccessor;
+import com.kraby.mcarcinizer.utils.config.ConfigEvaluatorsChecker;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -25,6 +27,8 @@ public class DkConfig extends ConfigAccessor {
     private static final String CFG_DEATHKEEPER_DEATH_MSG = "deathkeeper.death_message";
     private static final String CFG_BAN_ON_DEATH = "deathkeeper.ban_on_death";
     private static final String CFG_DEATH_BAN_EXPR = "deathkeeper.death_ban_expr";
+
+    private static final String VARIABLE_DK_LVL = "DK_LVL";
 
     public DkConfig(final FileConfiguration config) {
         super(config);
@@ -142,7 +146,7 @@ public class DkConfig extends ConfigAccessor {
         String exprString = config.getString(CFG_DEATH_BAN_EXPR, "0");
         ExpressionEvaluator evaluator = new Exp4jEvaluator(exprString);
         evaluator.setVariables(new PlayerVariables(p));
-        evaluator.setVariable("DK_LVL", deathKeeperLevel);
+        evaluator.setVariable(VARIABLE_DK_LVL, deathKeeperLevel);
 
         if (!evaluator.isValid()) {
             logExprErrors(evaluator);
@@ -161,7 +165,7 @@ public class DkConfig extends ConfigAccessor {
     private double getLevelDependantExpr(String var, double level, boolean allowNegatives) {
         String exprString = config.getString(var, "0");
         ExpressionEvaluator evaluator = new Exp4jEvaluator(exprString);
-        evaluator.setVariable("LVL", level);
+        evaluator.setVariable(VARIABLE_DK_LVL, level);
 
         if (!evaluator.isValid()) {
             logExprErrors(evaluator);
@@ -183,5 +187,30 @@ public class DkConfig extends ConfigAccessor {
         for (String err : expr.getErrors()) {
             logger.info(String.format("%n- %s", err));
         }
+    }
+
+    private ConfigEvaluatorsChecker getEvaluatorsChecker() {
+        ConfigEvaluatorsChecker c = new ConfigEvaluatorsChecker();
+
+        List<String> playerVariables = PlayerVariables.getVariableNames();
+
+        // Deathkeeper level, uses player variables
+        c.registerEvaluator(config, CFG_DEATHKEEPER_LVL_EXPR)
+                .addVariables(playerVariables);
+        // Deathkeeper attributes, use deathkeeper level
+        c.registerEvaluator(config, CFG_DEATHKEEPER_ATTACK_EXPR).addVariable(VARIABLE_DK_LVL);
+        c.registerEvaluator(config, CFG_DEATHKEEPER_HP_EXPR).addVariable(VARIABLE_DK_LVL);
+        c.registerEvaluator(config, CFG_DEATHKEEPER_SPEED_EXPR).addVariable(VARIABLE_DK_LVL);
+        // Ban time, player variables aswell as dk level
+        c.registerEvaluator(config, CFG_DEATH_BAN_EXPR)
+                .addVariables(playerVariables)
+                .addVariable(VARIABLE_DK_LVL);
+
+        return c;
+    }
+
+    @Override
+    public List<String> getErrors() {
+        return getEvaluatorsChecker().getErrors();
     }
 }

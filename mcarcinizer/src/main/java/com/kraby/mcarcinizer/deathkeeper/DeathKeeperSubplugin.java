@@ -1,8 +1,10 @@
 package com.kraby.mcarcinizer.deathkeeper;
 
+import java.util.List;
 import com.kraby.mcarcinizer.Subplugin;
 import com.kraby.mcarcinizer.deathkeeper.config.DkConfig;
 import com.kraby.mcarcinizer.deathkeeper.listeners.ClassicDkListener;
+import com.kraby.mcarcinizer.utils.config.ConfigAccessor;
 import org.bukkit.plugin.Plugin;
 
 public class DeathKeeperSubplugin extends Subplugin {
@@ -58,5 +60,15 @@ public class DeathKeeperSubplugin extends Subplugin {
 
     public DkConfig getDkConfig() {
         return dkConfig;
+    }
+
+    @Override
+    public List<ConfigAccessor> getConfigAccessors() {
+        return List.of(dkConfig);
+    }
+
+    @Override
+    public String getName() {
+        return "DeathKeeper";
     }
 }
