@@ -27,8 +27,12 @@ public class DkConfig extends ConfigAccessor {
     private static final String CFG_DEATHKEEPER_DEATH_MSG = "deathkeeper.death_message";
     private static final String CFG_BAN_ON_DEATH = "deathkeeper.ban_on_death";
     private static final String CFG_DEATH_BAN_EXPR = "deathkeeper.death_ban_expr";
+    private static final String CFG_DEATH_BAN_MESSAGE = "deathkeeper.death_ban_message";
 
     private static final String VARIABLE_DK_LVL = "DK_LVL";
+    private static final String TOKEN_UNBAN_DATE = "{UNBAN_DATE}";
+    private static final String TOKEN_DEATH_REASON = "{DEATH_REASON}";
+    private static final String TOKEN_PLAYER_NAME = "{PLAYER_NAME}";
 
     public DkConfig(final FileConfiguration config) {
         super(config);
@@ -154,6 +158,22 @@ public class DkConfig extends ConfigAccessor {
         }
 
         return Math.max(0, evaluator.evaluate());
+    }
+
+    /**
+     * Get the ban reason/ban message that will be given to the player.
+     * @param p
+     * @param unbanDate
+     * @param deathMessage
+     * @return
+     */
+    public String getDeathBanMessage(Player p, Date unbanDate, String deathMessage) {
+        String template = config.getString(CFG_DEATH_BAN_MESSAGE, TOKEN_DEATH_REASON + " ..?");
+
+        return template
+                .replace(TOKEN_DEATH_REASON, deathMessage)
+                .replace(TOKEN_UNBAN_DATE, unbanDate.toString())
+                .replace(TOKEN_PLAYER_NAME, p.getName());
     }
 
     /**
