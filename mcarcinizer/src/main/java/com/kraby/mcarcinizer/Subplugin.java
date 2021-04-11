@@ -2,6 +2,7 @@ package com.kraby.mcarcinizer;
 
 import java.util.ArrayList;
 import java.util.List;
+import com.kraby.mcarcinizer.utils.config.ConfigAccessor;
 import org.bukkit.Bukkit;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
@@ -46,9 +47,17 @@ public abstract class Subplugin {
     }
 
     /**
+     * Get this subplugin's name (should be unique).
+     * @return
+     */
+    public abstract String getName();
+
+    /**
      * Reload this subplugin's config, listeners, etc.
      */
     public abstract void reload();
+
+    public abstract List<ConfigAccessor> getConfigAccessors();
 
     protected abstract void createListeners();
 }

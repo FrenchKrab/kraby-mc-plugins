@@ -1,11 +1,13 @@
 package com.kraby.mcarcinizer.healthhardcorizer;
 
+import java.util.List;
 import com.kraby.mcarcinizer.Subplugin;
 import com.kraby.mcarcinizer.healthhardcorizer.config.GeneralConfig;
 import com.kraby.mcarcinizer.healthhardcorizer.config.RegenConfig;
 import com.kraby.mcarcinizer.healthhardcorizer.config.RespawnConfig;
 import com.kraby.mcarcinizer.healthhardcorizer.listeners.RegenListener;
 import com.kraby.mcarcinizer.healthhardcorizer.listeners.RespawnListener;
+import com.kraby.mcarcinizer.utils.config.ConfigAccessor;
 import org.bukkit.plugin.Plugin;
 
 public class HealthHardcorizerSubplugin extends Subplugin  {
@@ -89,5 +91,15 @@ public class HealthHardcorizerSubplugin extends Subplugin  {
 
     public RespawnConfig getRespawnConfig() {
         return respawnConfig;
+    }
+
+    @Override
+    public List<ConfigAccessor> getConfigAccessors() {
+        return List.of(generalConfig, regenConfig, respawnConfig);
+    }
+
+    @Override
+    public String getName() {
+        return "HealthHardcorizer";
     }
 }
