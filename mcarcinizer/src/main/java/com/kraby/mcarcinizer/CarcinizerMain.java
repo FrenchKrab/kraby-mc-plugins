@@ -28,6 +28,10 @@ public class CarcinizerMain extends JavaPlugin {
         //
     }
 
+    public List<Subplugin> getSubplugins() {
+        return Collections.unmodifiableList(subplugins);
+    }
+
     /**
      * Calls the reload method on all subplugins.
      */
