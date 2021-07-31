@@ -20,14 +20,7 @@ public class RegenListener implements Listener {
     @EventHandler(priority = EventPriority.LOWEST)
     public void onEntityReceiveDamage(EntityDamageEvent e) {
         if (e.getEntityType() == EntityType.PLAYER) {
-            Player p = (Player)e.getEntity();
-            double damages = e.getFinalDamage();
-
-            double newLife = CustomRegenLogic.getUnifiedHealth(p) - damages;
-            if (newLife > 0.0) {
-                e.setDamage(0.0);
-                CustomRegenLogic.setUnifiedHealth(p, newLife);
-            }
+            CustomRegenLogic.applyDamageEventPlayerUnifiedHealth(e);
         }
     }
 
