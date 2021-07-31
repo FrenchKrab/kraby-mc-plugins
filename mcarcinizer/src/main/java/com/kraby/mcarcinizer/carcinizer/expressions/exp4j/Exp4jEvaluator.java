@@ -2,9 +2,7 @@ package com.kraby.mcarcinizer.carcinizer.expressions.exp4j;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.logging.Logger;
 import com.kraby.mcarcinizer.carcinizer.expressions.ExpressionEvaluator;
-import com.kraby.mcarcinizer.deathkeeper.DeathKeeperSubplugin;
 import java.util.List;
 import net.objecthunter.exp4j.Expression;
 import net.objecthunter.exp4j.ExpressionBuilder;
