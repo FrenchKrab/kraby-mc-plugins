@@ -6,7 +6,8 @@ import java.util.List;
 import java.util.Map;
 import com.kraby.mcarcinizer.carcinizer.expressions.ExpressionEvaluator;
 import com.kraby.mcarcinizer.carcinizer.expressions.exp4j.Exp4jEvaluator;
-import org.bukkit.configuration.file.FileConfiguration;
+
+import org.bukkit.configuration.Configuration;
 
 public class ConfigEvaluatorsChecker {
 
@@ -83,7 +84,7 @@ public class ConfigEvaluatorsChecker {
      * @param fieldName
      * @return The registered evaluator checker.
      */
-    public Checker registerEvaluator(FileConfiguration config, String fieldName) {
+    public Checker registerEvaluator(Configuration config, String fieldName) {
         String expString = config.getString(fieldName, "!<" + fieldName + "> NOT SET!");
         return registerEvaluator(expString, fieldName);
     }

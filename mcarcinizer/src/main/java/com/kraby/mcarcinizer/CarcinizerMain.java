@@ -3,13 +3,17 @@ package com.kraby.mcarcinizer;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
+import com.kraby.mcarcinizer.carcinizer.plugins.Subplugin;
 import com.kraby.mcarcinizer.deathkeeper.DeathKeeperSubplugin;
 import com.kraby.mcarcinizer.healthhardcorizer.HealthHardcorizerSubplugin;
 import com.kraby.mcarcinizer.mcarcinizer.commands.InvSizeCommand;
 import com.kraby.mcarcinizer.mcarcinizer.InfoLogs;
 import com.kraby.mcarcinizer.mcarcinizer.commands.CheckConfigCommand;
 import com.kraby.mcarcinizer.mcarcinizer.commands.ReloadCommand;
-import com.kraby.mcarcinizer.utils.config.ConfigAccessor;
+import com.kraby.mcarcinizer.utils.config.Config;
+import com.kraby.mcarcinizer.utils.config.ErrorCheckableConfig;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -69,8 +73,12 @@ public class CarcinizerMain extends JavaPlugin {
         List<String> errors = new ArrayList<>();
         for (Subplugin sp : this.getSubplugins()) {
             String pluginPrefix = ChatColor.YELLOW + "(" + sp.getName() + ") ";
-            for (ConfigAccessor conf : sp.getConfigAccessors()) {
-                for (String error : conf.getErrors()) {
+            for (Config conf : sp.getConfigs()) {
+                if (!(conf instanceof ErrorCheckableConfig)) {
+                    continue;
+                }
+
+                for (String error : ((ErrorCheckableConfig)conf).getErrors()) {
                     errors.add(pluginPrefix + ChatColor.RED + error);
                 }
             }

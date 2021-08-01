@@ -11,12 +11,14 @@ import com.kraby.mcarcinizer.deathkeeper.DeathKeeperSubplugin;
 import com.kraby.mcarcinizer.deathkeeper.data.DeathKeeperData;
 import com.kraby.mcarcinizer.utils.config.ConfigAccessor;
 import com.kraby.mcarcinizer.utils.config.ConfigEvaluatorsChecker;
-import org.bukkit.configuration.file.FileConfiguration;
+import com.kraby.mcarcinizer.utils.config.ErrorCheckableConfig;
+
+import org.bukkit.configuration.Configuration;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
-public class DkConfig extends ConfigAccessor {
+public class DkConfig extends ConfigAccessor implements ErrorCheckableConfig {
     private static final String CFG_PLUGIN_ENABLED = "plugin_enabled";
     private static final String CFG_DEATHKEEPER_LVL_EXPR = "deathkeeper.lvl_expr";
     private static final String CFG_DEATHKEEPER_ATTACK_EXPR = "deathkeeper.attack_expr";
@@ -34,7 +36,7 @@ public class DkConfig extends ConfigAccessor {
     private static final String TOKEN_DEATH_REASON = "{DEATH_REASON}";
     private static final String TOKEN_PLAYER_NAME = "{PLAYER_NAME}";
 
-    public DkConfig(final FileConfiguration config) {
+    public DkConfig(final Configuration config) {
         super(config);
     }
 

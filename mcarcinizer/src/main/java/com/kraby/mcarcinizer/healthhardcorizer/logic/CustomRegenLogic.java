@@ -97,7 +97,7 @@ public class CustomRegenLogic {
             double manualArmorDamage = 0.0;
 
             if (damages > p.getHealth() && newUHealth > 0) {
-                e.setDamage(p.getHealth() - HEALTH_OFFSET);
+                e.setDamage(p.getHealth() - 0.5);
                 manualArmorDamage = damages;
             } else {
                 e.setDamage(damages - healed);
