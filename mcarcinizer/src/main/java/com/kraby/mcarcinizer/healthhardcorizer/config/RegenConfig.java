@@ -1,15 +1,18 @@
 package com.kraby.mcarcinizer.healthhardcorizer.config;
 
+
 import com.kraby.mcarcinizer.utils.config.ConfigAccessor;
-import org.bukkit.configuration.file.FileConfiguration;
+import com.kraby.mcarcinizer.utils.config.EnablableConfig;
+
+import org.bukkit.configuration.Configuration;
 import org.bukkit.plugin.Plugin;
 
-public class RegenConfig extends ConfigAccessor {
+public class RegenConfig extends ConfigAccessor implements EnablableConfig {
     private static final String CFG_MODULE_ENABLED = "hardcore_regen.enabled";
     private static final String CFG_MIN_FOOD = "hardcore_regen.minimum_food";
     private static final String CFG_FOOD_POINT_WORTH = "hardcore_regen.food_point_worth";
 
-    public RegenConfig(FileConfiguration config) {
+    public RegenConfig(Configuration config) {
         super(config);
     }
 
@@ -18,7 +21,7 @@ public class RegenConfig extends ConfigAccessor {
         super(plugin, configFileName);
     }
 
-
+    @Override
     public boolean isEnabled() {
         return config.getBoolean(CFG_MODULE_ENABLED, false);
     }

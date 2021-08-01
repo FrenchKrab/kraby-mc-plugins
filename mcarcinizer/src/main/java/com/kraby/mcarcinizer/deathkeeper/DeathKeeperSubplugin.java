@@ -1,18 +1,22 @@
 package com.kraby.mcarcinizer.deathkeeper;
 
+import java.util.HashMap;
 import java.util.List;
-import com.kraby.mcarcinizer.Subplugin;
+import java.util.Map;
+
+import com.kraby.mcarcinizer.carcinizer.plugins.ModuleBasedSubplugin;
 import com.kraby.mcarcinizer.deathkeeper.config.DkConfig;
 import com.kraby.mcarcinizer.deathkeeper.listeners.ClassicDkListener;
-import com.kraby.mcarcinizer.utils.config.ConfigAccessor;
+import com.kraby.mcarcinizer.utils.config.Config;
+
+import org.bukkit.event.Listener;
 import org.bukkit.plugin.Plugin;
 
-public class DeathKeeperSubplugin extends Subplugin {
+public class DeathKeeperSubplugin extends ModuleBasedSubplugin {
     private static final String CONFIG_FILE_NAME = "deathkeeper.yml";
+    private static final String MODULE_ID_DK = "dk";
 
     private static DeathKeeperSubplugin singleton;
-
-    private DkConfig dkConfig;
 
     /**
      * Create the subplugin. Should only be created once (singleton) (... not really clean).
@@ -23,26 +27,6 @@ public class DeathKeeperSubplugin extends Subplugin {
         if (setSingleton(this)) {
             reload();
         }
-    }
-
-    /**
-     * Reload this subplugin's config file.
-     */
-    public void reload() {
-        unregisterAllListeners();
-
-        dkConfig = new DkConfig(getOwner(), CONFIG_FILE_NAME);
-        if (dkConfig.isPluginEnabled()) {
-            registerAllListeners();
-            getOwner().getLogger().info("DeathKeeper subplugin enabled !");
-        } else {
-            getOwner().getLogger().info("DeathKeeper subplugin disabled...");
-        }
-    }
-
-    @Override
-    protected void createListeners() {
-        listeners.add(new ClassicDkListener());
     }
 
     private static boolean setSingleton(DeathKeeperSubplugin singleton) {
@@ -59,16 +43,33 @@ public class DeathKeeperSubplugin extends Subplugin {
     }
 
     public DkConfig getDkConfig() {
-        return dkConfig;
-    }
-
-    @Override
-    public List<ConfigAccessor> getConfigAccessors() {
-        return List.of(dkConfig);
+        return (DkConfig)getMainConfig();
     }
 
     @Override
     public String getName() {
         return "DeathKeeper";
+    }
+
+    @Override
+    public String getDisplayName() {
+        return "DeathKeeper";
+    }
+
+    @Override
+    protected Map<String, List<Listener>> createModulesListeners() {
+        Map<String, List<Listener>> map = new HashMap<>();
+        map.put(MODULE_ID_DK, List.of(new ClassicDkListener()));
+        return map;
+    }
+
+    @Override
+    protected Map<String, Config> createModulesConfigs() {
+        return new HashMap<>();
+    }
+
+    @Override
+    protected Config createMainConfig() {
+        return new DkConfig(getOwner(), CONFIG_FILE_NAME);
     }
 }

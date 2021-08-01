@@ -1,7 +1,8 @@
 package com.kraby.mcarcinizer.healthhardcorizer.config;
 
 import com.kraby.mcarcinizer.utils.config.ConfigAccessor;
-import org.bukkit.configuration.file.FileConfiguration;
+
+import org.bukkit.configuration.Configuration;
 import org.bukkit.plugin.Plugin;
 
 public class RespawnConfig extends ConfigAccessor {
@@ -10,7 +11,7 @@ public class RespawnConfig extends ConfigAccessor {
     private static final String CFG_FOOD = "hardcore_respawn.food";
     private static final String CFG_RESPAWN_MESSAGE = "hardcore_respawn.respawn_message";
 
-    public RespawnConfig(FileConfiguration config) {
+    public RespawnConfig(Configuration config) {
         super(config);
     }
 

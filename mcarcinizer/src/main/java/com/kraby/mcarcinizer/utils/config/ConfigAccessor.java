@@ -2,17 +2,17 @@ package com.kraby.mcarcinizer.utils.config;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+
+import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.Plugin;
 
-public abstract class ConfigAccessor {
-    protected final FileConfiguration config;
+public abstract class ConfigAccessor implements Config {
+    protected final Configuration config;
 
-    protected ConfigAccessor(final FileConfiguration config) {
+    protected ConfigAccessor(final Configuration config) {
         this.config = config;
     }
 
@@ -44,11 +44,8 @@ public abstract class ConfigAccessor {
         return config;
     }
 
-    /**
-     * Get errors detected in this config file.
-     * @return Textual descriptions of the errors.
-     */
-    public List<String> getErrors() {
-        return new ArrayList<>();
+    @Override
+    public Configuration getConfig() {
+        return config;
     }
 }

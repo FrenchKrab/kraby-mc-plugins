@@ -1,26 +1,27 @@
 package com.kraby.mcarcinizer.healthhardcorizer;
 
+import java.util.HashMap;
 import java.util.List;
-import com.kraby.mcarcinizer.Subplugin;
+import java.util.Map;
+
+import com.kraby.mcarcinizer.carcinizer.plugins.ModuleBasedSubplugin;
 import com.kraby.mcarcinizer.healthhardcorizer.config.GeneralConfig;
 import com.kraby.mcarcinizer.healthhardcorizer.config.RegenConfig;
 import com.kraby.mcarcinizer.healthhardcorizer.config.RespawnConfig;
 import com.kraby.mcarcinizer.healthhardcorizer.listeners.RegenListener;
 import com.kraby.mcarcinizer.healthhardcorizer.listeners.RespawnListener;
-import com.kraby.mcarcinizer.utils.config.ConfigAccessor;
+import com.kraby.mcarcinizer.utils.config.Config;
+
+import org.bukkit.event.Listener;
 import org.bukkit.plugin.Plugin;
 
-public class HealthHardcorizerSubplugin extends Subplugin  {
+public class HealthHardcorizerSubplugin extends ModuleBasedSubplugin  {
+    private static final String ID_MODULE_REGEN = "regen";
+    private static final String ID_MODULE_RESPAWN = "respawn";
+
     private static final String CONFIG_FILE_NAME = "healthhardcorizer.yml";
 
     private static HealthHardcorizerSubplugin singleton;
-
-    private RegenListener regenListener;
-    private RespawnListener respawnListener;
-
-    private GeneralConfig generalConfig;
-    private RegenConfig regenConfig;
-    private RespawnConfig respawnConfig;
 
     /**
      * Create the subplugin. Should only be created once (singleton) (... not really clean).
@@ -31,45 +32,6 @@ public class HealthHardcorizerSubplugin extends Subplugin  {
         if (setSingleton(this)) {
             reload();
         }
-    }
-
-    /**
-     * Reload this subplugin's config files.
-     */
-    public void reload() {
-        unregisterAllListeners();
-
-        generalConfig = new GeneralConfig(getOwner(), CONFIG_FILE_NAME);
-        regenConfig = new RegenConfig(getOwner(), CONFIG_FILE_NAME);
-        respawnConfig = new RespawnConfig(getOwner(), CONFIG_FILE_NAME);
-
-        if (generalConfig.isPluginEnabled()) {
-            int enabledSubmodules = 0;
-            if (regenConfig.isEnabled()) {
-                registerListener(regenListener);
-                enabledSubmodules++;
-            }
-            if (respawnConfig.isEnabled()) {
-                registerListener(respawnListener);
-                enabledSubmodules++;
-            }
-
-            getOwner().getLogger().info(
-                String.format("HealthHardcorizer subplugin enabled ! [%d/%d modules]",
-                enabledSubmodules,
-                listeners.size()));
-        } else {
-            getOwner().getLogger().info("HealthHardcorizer subplugin disabled...");
-        }
-    }
-
-    @Override
-    protected void createListeners() {
-        regenListener = new RegenListener();
-        respawnListener = new RespawnListener();
-
-        listeners.add(regenListener);
-        listeners.add(respawnListener);
     }
 
     private static boolean setSingleton(HealthHardcorizerSubplugin singleton) {
@@ -86,20 +48,44 @@ public class HealthHardcorizerSubplugin extends Subplugin  {
     }
 
     public RegenConfig getRegenConfig() {
-        return regenConfig;
+        return (RegenConfig) getModuleConfig(ID_MODULE_REGEN);
     }
 
     public RespawnConfig getRespawnConfig() {
-        return respawnConfig;
+        return (RespawnConfig) getModuleConfig(ID_MODULE_RESPAWN);
     }
 
-    @Override
-    public List<ConfigAccessor> getConfigAccessors() {
-        return List.of(generalConfig, regenConfig, respawnConfig);
-    }
+
+    // ------ Overriden --------
 
     @Override
     public String getName() {
         return "HealthHardcorizer";
+    }
+
+    @Override
+    public String getDisplayName() {
+        return "HealthHardcorizer";
+    }
+
+    @Override
+    protected Map<String, List<Listener>> createModulesListeners() {
+        Map<String, List<Listener>> map = new HashMap<>();
+        map.put(ID_MODULE_REGEN, List.of(new RegenListener()));
+        map.put(ID_MODULE_RESPAWN, List.of(new RespawnListener()));
+        return map;
+    }
+
+    @Override
+    protected Map<String, Config> createModulesConfigs() {
+        Map<String, Config> map = new HashMap<>();
+        map.put(ID_MODULE_REGEN, new RegenConfig(getMainConfig().getConfig()));
+        map.put(ID_MODULE_RESPAWN, new RespawnConfig(getMainConfig().getConfig()));
+        return map;
+    }
+
+    @Override
+    protected Config createMainConfig() {
+        return new GeneralConfig(getOwner(), CONFIG_FILE_NAME);
     }
 }
