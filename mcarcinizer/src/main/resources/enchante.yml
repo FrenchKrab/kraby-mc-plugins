@@ -1,0 +1,8 @@
+plugin_enabled: true
+
+better_anvil:
+    enabled: true
+
+    values:
+        - DIAMOND: 3
+        - DIAMOND_BLOCK: 27
