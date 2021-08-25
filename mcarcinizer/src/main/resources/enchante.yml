@@ -3,6 +3,76 @@ plugin_enabled: true
 better_anvil:
     enabled: true
 
-    values:
-        - DIAMOND: 3
-        - DIAMOND_BLOCK: 27
+    # All items : https://hub.spigotmc.org/javadocs/spigot/org/bukkit/Material.html
+
+    cost_reduction_items:
+        DIRT:
+            reduction: 1    # how much levels does it remove
+            cost: 5         # how much does it cost to remove them
+            count: 2        # how many items required for it
+
+    # --- attribute enchant parameters ---
+    # type: mult/add
+    # slot: https://hub.spigotmc.org/javadocs/spigot/org/bukkit/inventory/EquipmentSlot.html (default: no restriction)
+    # attribute:    https://hub.spigotmc.org/javadocs/spigot/org/bukkit/attribute/Attribute.html
+    # cost: integer     (only used if force_cost is true, fixed cost value)
+    # force_cost: boolean (default: false)
+    # repair_raise: integer (default: 1) (how much this enchant raises the cost value)
+    # count: integer    (default: 1) (how many items needed to trigger this attribute enchantment)
+    # value: float      (how much does it add ? Straightforward in case of 'add' type. In case of 'mult' type: 0.15 = +15%, -1.6=-160%)
+    # deviation: float  (default: 0.0)(the standard deviation/sigma to introduce random in the value. set to 0 to disable)
+    # cumulation: formula   (default: 0.404)(how to merge the old bonus with new bonus)
+    # probability: float    (default: 1.0) (chance of the attribute appearing)
+    # reroll: NO_LIMIT/ITEM_CHANGED/ATTCHANT_COUNT_ITEM (behaviour for rerolling the attributes)
+    # min_repair_cost: integer (default: 0) (minimal level for this attribute to be available (included))
+    # min_repair_cost: integer (default: +infinity)(maximal level for this attribute to be available (included))
+
+    # --- attribute enchant details ---
+    # Deviation : See wikipedia diagram. With a value=0.6 and a deviation=0.1 you'll roughly get values between 0.3 and 0.9 with most values being centered around 0.6 (68% of the values between 0.5 & 0.7) https://en.wikipedia.org/wiki/Normal_distribution#/media/File:Standard_deviation_diagram.svg
+    # Cumulation : variables: CURRENT=current bonus of the attribute, BONUS=new bonus chosen from value w/ deviation
+    # Reroll:   NO_LIMIT = rerolled each time the consumable is put in the anvil)
+    #           ITEM_CHANGED = rerolled each time the item changes (enchant, name, attributes))
+    #           ATTCHANT_COUNT_ITEM = rerolled each time the item is attribute enchanted
+
+    attribute_enchants:
+        PHANTOM_MEMBRANE:
+            0:
+                type: mult
+                slot: ANY
+                attribute: GENERIC_MOVEMENT_SPEED
+                cost: 5
+                force_cost: true
+                repair_raise: 5
+                count: 1
+                value: 0.03
+                deviation: 0.005
+                cumulation: CURRENT + ((1+pos(CURRENT)) * BONUS)
+                probability: 1.0
+                reroll: ATTCHANT_COUNT_ITEM
+        HEART_OF_THE_SEA:
+            0:
+                type: add
+                slot: ANY
+                attribute: GENERIC_MAX_HEALTH
+                cost: 10
+                force_cost: true
+                repair_raise: 10
+                count: 1
+                value: 1
+                deviation: 0.2
+                cumulation: CURRENT + BONUS
+                probability: 1.0
+                reroll: ITEM_CHANGED
+            1:
+                type: mult
+                slot: FEET
+                attribute: GENERIC_MOVEMENT_SPEED
+                cost: 0
+                force_cost: false
+                repair_raise: 0
+                count: 1
+                value: -0.02
+                deviation: 0.01
+                cumulation: CURRENT + ((1+pos(CURRENT)) * BONUS)
+                probability: 0.4
+                reroll: ITEM_CHANGED
