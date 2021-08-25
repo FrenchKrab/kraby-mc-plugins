@@ -14,6 +14,18 @@ Default config file: [mcarcinizer/src/main/resources/deathkeeper.yml](mcarcinize
 Default config file:
 [mcarcinizer/src/main/resources/healthhardcorizer.yml](mcarcinizer/src/main/resources/healthhardcorizer.yml)
 
+## Enchanté!
+
+Allows tweaks on the vanilla Minecraft enchantment system.
+
+- **BetterAnvil** : Multiple feature to give more control to players :
+  - Lower the repair cost of items
+  - Add attributes, also called *attchantment* (for attribute enchantment lol ...)
+
+Default config file:
+[mcarcinizer/src/main/resources/healthhardcorizer.yml](mcarcinizer/src/main/resources/enchante.yml)
+
+
 # How to build the project
 
 Clone this repository and run
