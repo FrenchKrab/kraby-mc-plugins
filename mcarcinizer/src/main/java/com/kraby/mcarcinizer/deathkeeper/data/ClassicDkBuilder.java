@@ -42,7 +42,7 @@ public class ClassicDkBuilder {
     }
 
     public ClassicDkBuilder withLife(final double life) {
-        this.life = life;
+        this.life = Math.min(2048.0, life);
         return this;
     }
 
