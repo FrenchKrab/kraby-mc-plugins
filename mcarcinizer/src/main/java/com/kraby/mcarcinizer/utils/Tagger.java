@@ -3,8 +3,8 @@ package com.kraby.mcarcinizer.utils;
 import com.kraby.mcarcinizer.CarcinizerMain;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.NamespacedKey;
-import org.bukkit.entity.Entity;
 import org.bukkit.persistence.PersistentDataContainer;
+import org.bukkit.persistence.PersistentDataHolder;
 import org.bukkit.persistence.PersistentDataType;
 
 public class Tagger {
@@ -12,11 +12,11 @@ public class Tagger {
     }
 
     /**
-     * Apply an empty tag to a given entity.
+     * Apply an empty tag to a given PersistentDataHolder.
      * @param e
      * @param tag
      */
-    public static void tag(Entity e, String tag) {
+    public static void tag(PersistentDataHolder e, String tag) {
         if (StringUtils.isEmpty(tag)) {
             return;
         }
@@ -29,11 +29,11 @@ public class Tagger {
     }
 
     /**
-     * Remove a tag (empty or not) from a given entity.
+     * Remove a tag (empty or not) from a given PersistentDataHolder.
      * @param e
      * @param tag
      */
-    public static void untag(Entity e, String tag) {
+    public static void untag(PersistentDataHolder e, String tag) {
         if (StringUtils.isEmpty(tag)) {
             return;
         }
@@ -44,7 +44,7 @@ public class Tagger {
     }
 
     /**
-     * Store data onto the entity.
+     * Store data onto the PersistentDataHolder.
      * @param <T>
      * @param <Z>
      * @param e
@@ -52,14 +52,18 @@ public class Tagger {
      * @param type
      * @param value
      */
-    public static <T,Z> void store(Entity e, String tag, PersistentDataType<T,Z> type, Z value) {
+    public static <T,Z> void store(
+            PersistentDataHolder e,
+            String tag,
+            PersistentDataType<T,Z> type,
+            Z value) {
         PersistentDataContainer dataContainer = e.getPersistentDataContainer();
         NamespacedKey key = new NamespacedKey(CarcinizerMain.getSingleton(), tag);
         dataContainer.set(key, type, value);
     }
 
     /**
-     * Retrieve stored data from an entity.
+     * Retrieve stored data from an PersistentDataHolder.
      * @param <T>
      * @param <Z>
      * @param e
@@ -67,14 +71,17 @@ public class Tagger {
      * @param type
      * @return
      */
-    public static <T,Z> Z retrieve(Entity e, String tag, PersistentDataType<T,Z> type) {
+    public static <T,Z> Z retrieve(
+            PersistentDataHolder e,
+            String tag,
+            PersistentDataType<T,Z> type) {
         PersistentDataContainer dataContainer = e.getPersistentDataContainer();
         NamespacedKey key = new NamespacedKey(CarcinizerMain.getSingleton(), tag);
         return dataContainer.get(key, type);
     }
 
     /**
-     * Retrive store data from an entity, with a default value.
+     * Retrive store data from an PersistentDataHolder, with a default value.
      * @param <T>
      * @param <Z>
      * @param e
@@ -84,7 +91,7 @@ public class Tagger {
      * @return
      */
     public static <T,Z> Z retrieve(
-            Entity e,
+            PersistentDataHolder e,
             String tag,
             PersistentDataType<T,Z> type,
             Z defaultValue) {
@@ -94,12 +101,12 @@ public class Tagger {
     }
 
     /**
-     * Test if the entity has a given tag.
+     * Test if the PersistentDataHolder has a given tag.
      * @param e
      * @param tag
      * @return
      */
-    public static boolean isTagged(Entity e, String tag) {
+    public static boolean isTagged(PersistentDataHolder e, String tag) {
         if (StringUtils.isEmpty(tag)) {
             return false;
         }

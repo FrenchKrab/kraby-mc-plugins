@@ -40,10 +40,10 @@
         <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>org.spigotmc</groupId>
-      <artifactId>spigot-api</artifactId>
-      <version>1.16.4-R0.1-SNAPSHOT</version>
-      <scope>provided</scope>
+        <groupId>org.spigotmc</groupId>
+        <artifactId>spigot-api</artifactId>
+        <version>1.17.1-R0.1-SNAPSHOT</version>
+        <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>net.objecthunter</groupId>
@@ -59,10 +59,13 @@
       <resource>
         <directory>${project.basedir}/src/main/resources</directory>
         <includes>
-          <include>plugin.yml</include>
-          <include>config.yml</include>
-          <include>deathkeeper.yml</include>
-          <include>healthhardcorizer.yml</include>
+          <include>*.yml</include>
+        </includes>
+      </resource>
+      <resource>
+        <directory>${project.basedir}/src/main/resources/data</directory>
+        <includes>
+          <include>*.yml</include>
         </includes>
       </resource>
     </resources>

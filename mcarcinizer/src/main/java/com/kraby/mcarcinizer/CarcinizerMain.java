@@ -6,6 +6,7 @@ import java.util.List;
 
 import com.kraby.mcarcinizer.carcinizer.plugins.Subplugin;
 import com.kraby.mcarcinizer.deathkeeper.DeathKeeperSubplugin;
+import com.kraby.mcarcinizer.enchante.EnchanteSubplugin;
 import com.kraby.mcarcinizer.healthhardcorizer.HealthHardcorizerSubplugin;
 import com.kraby.mcarcinizer.mcarcinizer.commands.InvSizeCommand;
 import com.kraby.mcarcinizer.mcarcinizer.InfoLogs;
@@ -56,6 +57,7 @@ public class CarcinizerMain extends JavaPlugin {
         subplugins.clear();
         subplugins.add(new DeathKeeperSubplugin(this));
         subplugins.add(new HealthHardcorizerSubplugin(this));
+        subplugins.add(new EnchanteSubplugin(this));
     }
 
     private void registerCommands() {

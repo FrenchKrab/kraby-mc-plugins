@@ -17,6 +17,7 @@ public class ExtendedFunctions {
         List<Function> fns = new ArrayList<>();
         fns.add(getMin());
         fns.add(getMax());
+        fns.add(getPos());
         return fns;
     }
 
@@ -42,6 +43,19 @@ public class ExtendedFunctions {
             @Override
             public double apply(double... args) {
                 return args[0] > args[1] ? args[0] : args[1];
+            }
+        };
+    }
+
+    /**
+     * pos(a), discards the negative sign of a if it has one.
+     * @return
+     */
+    public static Function getPos() {
+        return new Function("pos", 1) {
+            @Override
+            public double apply(double... args) {
+                return args[0] >= 0 ? args[0] : -args[0];
             }
         };
     }
