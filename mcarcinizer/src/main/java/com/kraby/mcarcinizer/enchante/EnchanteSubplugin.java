@@ -9,7 +9,6 @@ import com.kraby.mcarcinizer.enchante.config.BetterAnvilConfig;
 import com.kraby.mcarcinizer.enchante.config.GeneralConfig;
 import com.kraby.mcarcinizer.enchante.listeners.BetterAnvilListener;
 import com.kraby.mcarcinizer.utils.config.Config;
-import com.kraby.mcarcinizer.utils.config.ConfigAccessor;
 
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.Plugin;
@@ -42,6 +41,11 @@ public class EnchanteSubplugin extends ModuleBasedSubplugin  {
 
     public static EnchanteSubplugin getSingleton() {
         return singleton;
+    }
+
+
+    public BetterAnvilConfig getBetterAnvilConfig() {
+        return (BetterAnvilConfig) getModuleConfig(MODULE_ID_BETTERANVIL);
     }
 
 
