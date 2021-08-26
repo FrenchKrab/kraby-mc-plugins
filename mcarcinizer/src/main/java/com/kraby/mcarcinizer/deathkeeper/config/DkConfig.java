@@ -30,6 +30,7 @@ public class DkConfig extends ConfigAccessor implements ErrorCheckableConfig {
     private static final String CFG_BAN_ON_DEATH = "deathkeeper.ban_on_death";
     private static final String CFG_DEATH_BAN_EXPR = "deathkeeper.death_ban_expr";
     private static final String CFG_DEATH_BAN_MESSAGE = "deathkeeper.death_ban_message";
+    private static final String CFG_SPAWN_PLAYER_KILL = "deathkeeper.spawn_on_player_kill";
 
     private static final String VARIABLE_DK_LVL = "DK_LVL";
     private static final String TOKEN_UNBAN_DATE = "{UNBAN_DATE}";
@@ -176,6 +177,14 @@ public class DkConfig extends ConfigAccessor implements ErrorCheckableConfig {
                 .replace(TOKEN_DEATH_REASON, deathMessage)
                 .replace(TOKEN_UNBAN_DATE, unbanDate.toString())
                 .replace(TOKEN_PLAYER_NAME, p.getName());
+    }
+
+    /**
+     * Returns true if DeathKeepers should spawn when a player is killed by another.
+     * @return
+     */
+    public boolean isSpawnedOnPlayerKill() {
+        return config.getBoolean(CFG_SPAWN_PLAYER_KILL, false);
     }
 
     /**

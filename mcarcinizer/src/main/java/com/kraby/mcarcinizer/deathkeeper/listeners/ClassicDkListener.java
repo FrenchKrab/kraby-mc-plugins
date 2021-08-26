@@ -34,6 +34,10 @@ public class ClassicDkListener implements Listener {
         final DeathKeeperSubplugin singleton = DeathKeeperSubplugin.getSingleton();
         final DkConfig config = singleton.getDkConfig();
 
+        // Do not spawn a DK if the player was killed by another and this feature was disabled
+        if (e.getEntity().getKiller() instanceof Player && !config.isSpawnedOnPlayerKill())
+            return;
+
         //Deathkeeper spawning
         final Player p = e.getEntity();
 
