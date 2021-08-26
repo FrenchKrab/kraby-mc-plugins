@@ -32,3 +32,6 @@ deathkeeper:
   # Stats available, aswell as INVSIZE, XP and DK_LVL
   death_ban_expr: '(5 + 40*log(DK_LVL+1)) + (1200 - 2*(TIME_SINCE_DEATH/20))'
   death_ban_message: "Your soul is exhausted, please sit in limbo for some time... Cause of death : {DEATH_REASON}"
+
+  # Should a DeathKeeper be spawned when a player dies killed by another player ?
+  spawn_on_player_kill: false
