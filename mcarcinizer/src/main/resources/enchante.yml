@@ -26,13 +26,22 @@ better_anvil:
     # reroll: NO_LIMIT/ITEM_CHANGED/ATTCHANT_COUNT_ITEM (default:ATTCHANT_COUNT_ITEM) (behaviour for rerolling the attributes)
     # min_repair_cost: integer (default: 0) (minimal level for this attribute to be available (included))
     # min_repair_cost: integer (default: +infinity)(maximal level for this attribute to be available (included))
+    # works_on: list of strings (default: [WEAPONS, TOOLS, ARMORS])
 
     # --- attribute enchant details ---
     # Deviation : See wikipedia diagram. With a value=0.6 and a deviation=0.1 you'll roughly get values between 0.3 and 0.9 with most values being centered around 0.6 (68% of the values between 0.5 & 0.7) https://en.wikipedia.org/wiki/Normal_distribution#/media/File:Standard_deviation_diagram.svg
     # Cumulation : variables: CURRENT=current bonus of the attribute, BONUS=new bonus chosen from value w/ deviation
-    # Reroll:   NO_LIMIT = rerolled each time the consumable is put in the anvil)
+    # Reroll:   NO_LIMIT = rerolled each time the consumable is put in the anvil
     #           ITEM_CHANGED = rerolled each time the item changes (enchant, name, attributes))
     #           ATTCHANT_COUNT_ITEM = rerolled each time the item is attribute enchanted
+    # works_on : can be specific object names aswell as predefined categories. List of predefined categories :
+    #       ALL: anything
+    #       OBJECTS: any item that isn't a weapon/tool/armor
+    #       WEAPONS: any weapon (swords, trident, bow, ...)
+    #       ARMORS: any piece of armor
+    #       TOOLS: any tool (shovel, pickaxe, axe, hoe)
+    #       SHOVEL, PICKAXE, ...: any tier of weapon (wooden, stone, ...) of a given item category
+    #       example of specific objects: DIRT, PHANTOM_MEMBRANE, ... (see link to "Material" spigot page)
 
     attribute_enchants:
         PHANTOM_MEMBRANE:
@@ -46,6 +55,7 @@ better_anvil:
                 value: 0.03
                 deviation: 0.005
                 cumulation: CURRENT + ((1+pos(CURRENT)) * BONUS)
+                works_on: [OBJECTS,WEAPONS,TOOLS,RANGED_WEAPONS,ARMORS]
         HEART_OF_THE_SEA:
             main_health:
                 type: add

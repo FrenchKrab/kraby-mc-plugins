@@ -5,8 +5,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.UUID;
+import java.util.Locale.Category;
 
 import com.kraby.mcarcinizer.carcinizer.expressions.ExpressionEvaluator;
+import com.kraby.mcarcinizer.carcinizer.utils.ItemCategoryChecker;
 import com.kraby.mcarcinizer.carcinizer.vanilla.ItemsDefaultAttributes;
 import com.kraby.mcarcinizer.enchante.EnchanteSubplugin;
 import com.kraby.mcarcinizer.enchante.betteranvil.CustomEnchantSeed;
@@ -124,6 +126,10 @@ public class BetterAnvilListener implements Listener {
                     || ((Repairable)ogMeta).getRepairCost() > attData.maxRepairCost)) {
             return false;
         }
+
+        // Enchantment applyable only if the object fits the required category
+        if (!ItemCategoryChecker.isItemInOneCategory(result.getType(), attData.worksOn))
+            return false;
 
 
         Random r = new Random();

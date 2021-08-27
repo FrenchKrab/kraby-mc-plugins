@@ -1,5 +1,8 @@
 package com.kraby.mcarcinizer.enchante.config.betteranvil;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.kraby.mcarcinizer.CarcinizerMain;
 import com.kraby.mcarcinizer.carcinizer.expressions.ExpressionEvaluator;
 import com.kraby.mcarcinizer.carcinizer.expressions.exp4j.Exp4jEvaluator;
@@ -24,6 +27,7 @@ public class ItemAttributeEnchanterData {
     private static final String CFG_ATTCHANT_REROLL = "reroll";
     private static final String CFG_ATTCHANT_MIN_REPAIR = "min_repair_cost";
     private static final String CFG_ATTCHANT_MAX_REPAIR = "max_repair_cost";
+    private static final String CFG_ATTCHANT_WORKS_ON = "works_on";
 
 
     public final Operation operation;
@@ -40,6 +44,7 @@ public class ItemAttributeEnchanterData {
     public final int minRepairCost;
     public final int maxRepairCost;
     public final EquipmentSlot slot;
+    public final List<String> worksOn;
 
     private final ConfigurationSection section;
 
@@ -65,6 +70,7 @@ public class ItemAttributeEnchanterData {
         this.minRepairCost = section.getInt(CFG_ATTCHANT_MIN_REPAIR, 0);
         this.maxRepairCost = section.getInt(CFG_ATTCHANT_MAX_REPAIR, Integer.MAX_VALUE);
         this.slot = readSlot();
+        this.worksOn = readWorksOn();
     }
 
     public boolean isValid() {
@@ -117,6 +123,13 @@ public class ItemAttributeEnchanterData {
         } catch (Exception e) {
             return AttributeRerollBehaviour.ATTCHANT_COUNT_ITEM;
         }
+    }
+
+    private List<String> readWorksOn() {
+        List<String> result = section.getStringList(CFG_ATTCHANT_WORKS_ON);
+        if (result == null)
+            result = List.of("WEAPONS", "TOOLS", "ARMORS");
+        return result;
     }
 
     @Override
