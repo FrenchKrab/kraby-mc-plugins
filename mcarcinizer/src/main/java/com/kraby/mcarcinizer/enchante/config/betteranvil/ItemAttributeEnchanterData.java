@@ -55,7 +55,7 @@ public class ItemAttributeEnchanterData {
         this.attribute = readAttribute();
         this.value = section.getDouble(CFG_ATTCHANT_VALUE, 0);
         this.cost = section.getInt(CFG_ATTCHANT_COST, 0);
-        this.repairRaise = section.getInt(CFG_ATTCHANT_REPAIRRAISE, 1);
+        this.repairRaise = section.getInt(CFG_ATTCHANT_REPAIRRAISE, 0);
         this.count = section.getInt(CFG_ATTCHANT_COUNT, 1);
         this.forceCost = section.getBoolean(CFG_ATTCHANT_FORCECOST, false);
         this.deviation = section.getDouble(CFG_ATTCHANT_DEVIATION, 0);
@@ -115,7 +115,6 @@ public class ItemAttributeEnchanterData {
         try {
             return AttributeRerollBehaviour.valueOf(str);
         } catch (Exception e) {
-            CarcinizerMain.getSingleton().getServer().broadcastMessage("oups with " + str);
             return AttributeRerollBehaviour.ATTCHANT_COUNT_ITEM;
         }
     }

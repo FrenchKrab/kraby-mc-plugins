@@ -13,17 +13,17 @@ better_anvil:
 
     # --- attribute enchant parameters ---
     # type: mult/add
-    # slot: https://hub.spigotmc.org/javadocs/spigot/org/bukkit/inventory/EquipmentSlot.html (default: no restriction)
+    # slot: (default: no restriction) https://hub.spigotmc.org/javadocs/spigot/org/bukkit/inventory/EquipmentSlot.html
     # attribute:    https://hub.spigotmc.org/javadocs/spigot/org/bukkit/attribute/Attribute.html
-    # cost: integer     (only used if force_cost is true, fixed cost value)
+    # cost: integer     (default: 0) (only used if force_cost is true, fixed cost value)
     # force_cost: boolean (default: false)
-    # repair_raise: integer (default: 1) (how much this enchant raises the cost value)
+    # repair_raise: integer (default: 0) (how much this enchant raises the cost value)
     # count: integer    (default: 1) (how many items needed to trigger this attribute enchantment)
     # value: float      (how much does it add ? Straightforward in case of 'add' type. In case of 'mult' type: 0.15 = +15%, -1.6=-160%)
     # deviation: float  (default: 0.0)(the standard deviation/sigma to introduce random in the value. set to 0 to disable)
     # cumulation: formula   (default: 0.404)(how to merge the old bonus with new bonus)
     # probability: float    (default: 1.0) (chance of the attribute appearing)
-    # reroll: NO_LIMIT/ITEM_CHANGED/ATTCHANT_COUNT_ITEM (behaviour for rerolling the attributes)
+    # reroll: NO_LIMIT/ITEM_CHANGED/ATTCHANT_COUNT_ITEM (default:ATTCHANT_COUNT_ITEM) (behaviour for rerolling the attributes)
     # min_repair_cost: integer (default: 0) (minimal level for this attribute to be available (included))
     # min_repair_cost: integer (default: +infinity)(maximal level for this attribute to be available (included))
 
@@ -36,9 +36,8 @@ better_anvil:
 
     attribute_enchants:
         PHANTOM_MEMBRANE:
-            0:
+            main_speed:
                 type: mult
-                slot: ANY
                 attribute: GENERIC_MOVEMENT_SPEED
                 cost: 5
                 force_cost: true
@@ -47,12 +46,9 @@ better_anvil:
                 value: 0.03
                 deviation: 0.005
                 cumulation: CURRENT + ((1+pos(CURRENT)) * BONUS)
-                probability: 1.0
-                reroll: ATTCHANT_COUNT_ITEM
         HEART_OF_THE_SEA:
-            0:
+            main_health:
                 type: add
-                slot: ANY
                 attribute: GENERIC_MAX_HEALTH
                 cost: 10
                 force_cost: true
@@ -61,18 +57,12 @@ better_anvil:
                 value: 1
                 deviation: 0.2
                 cumulation: CURRENT + BONUS
-                probability: 1.0
-                reroll: ITEM_CHANGED
-            1:
+            sub_feet_speed:
                 type: mult
                 slot: FEET
                 attribute: GENERIC_MOVEMENT_SPEED
-                cost: 0
-                force_cost: false
-                repair_raise: 0
                 count: 1
                 value: -0.02
                 deviation: 0.01
                 cumulation: CURRENT + ((1+pos(CURRENT)) * BONUS)
                 probability: 0.4
-                reroll: ITEM_CHANGED
