@@ -20,6 +20,7 @@ import com.kraby.mcarcinizer.enchante.config.betteranvil.ItemRepairCostReducerDa
 import org.bukkit.Material;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeModifier;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.PrepareAnvilEvent;
@@ -154,7 +155,12 @@ public class BetterAnvilListener implements Listener {
 
         double valueBonus = attData.value + r.nextGaussian() * attData.deviation;
 
-        addOrMergeAttributeChange(result.getType(), newMeta, attData, valueBonus, targetSlot);
+        if (attData.attribute != null) {
+            addOrMergeAttributeChange(result.getType(), newMeta, attData, valueBonus, targetSlot);
+        } else if (attData.enchantment != null) {
+            int intBonus = (int)Math.round(valueBonus);
+            addOrMergeEnchant(attData, newMeta, intBonus);
+        }
 
         int repairCost;
         if (!attData.forceCost && newMeta instanceof Repairable) {
@@ -173,6 +179,17 @@ public class BetterAnvilListener implements Listener {
         return true;
     }
 
+
+    private static void addOrMergeEnchant(
+            ItemAttributeEnchanterData attData,
+            ItemMeta meta,
+            int bonus) {
+        //
+        Enchantment enchant = attData.enchantment;
+        int newLevel = meta.hasEnchant(enchant) ? meta.getEnchantLevel(enchant) : 0;
+        newLevel += bonus;
+        meta.addEnchant(enchant, newLevel, true);
+    }
 
     private static void addOrMergeAttributeChange(
             Material mat,

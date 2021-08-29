@@ -47,7 +47,7 @@ better_anvil:
         PHANTOM_MEMBRANE:
             main_speed:
                 type: mult
-                attribute: GENERIC_MOVEMENT_SPEED
+                effect: GENERIC_MOVEMENT_SPEED
                 cost: 5
                 force_cost: true
                 repair_raise: 5
@@ -59,7 +59,7 @@ better_anvil:
         HEART_OF_THE_SEA:
             main_health:
                 type: add
-                attribute: GENERIC_MAX_HEALTH
+                effect: GENERIC_MAX_HEALTH
                 cost: 10
                 force_cost: true
                 repair_raise: 10
@@ -70,9 +70,19 @@ better_anvil:
             sub_feet_speed:
                 type: mult
                 slot: FEET
-                attribute: GENERIC_MOVEMENT_SPEED
+                effect: GENERIC_MOVEMENT_SPEED
                 count: 1
                 value: -0.02
                 deviation: 0.01
                 cumulation: CURRENT + ((1+pos(CURRENT)) * BONUS)
                 probability: 0.4
+        GLOW_INK_SAC:
+            main:
+                type: add
+                effect: sharpness
+                cost: 10
+                force_cost: true
+                repair_raise: 10
+                count: 1
+                value: 2
+                deviation: 0.3
