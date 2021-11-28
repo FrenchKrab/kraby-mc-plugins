@@ -7,7 +7,9 @@ import java.util.Map;
 import com.kraby.mcarcinizer.carcinizer.plugins.ModuleBasedSubplugin;
 import com.kraby.mcarcinizer.enchante.config.BetterAnvilConfig;
 import com.kraby.mcarcinizer.enchante.config.GeneralConfig;
+import com.kraby.mcarcinizer.enchante.config.TweaksConfig;
 import com.kraby.mcarcinizer.enchante.listeners.BetterAnvilListener;
+import com.kraby.mcarcinizer.enchante.tweaks.TweaksListener;
 import com.kraby.mcarcinizer.utils.config.Config;
 
 import org.bukkit.event.Listener;
@@ -15,6 +17,7 @@ import org.bukkit.plugin.Plugin;
 
 public class EnchanteSubplugin extends ModuleBasedSubplugin  {
     private static final String MODULE_ID_BETTERANVIL = "betteranvil";
+    private static final String MODULE_ID_TWEAKS = "tweaks";
     private static final String CONFIG_FILE_NAME = "enchante.yml";
 
     private static EnchanteSubplugin singleton;
@@ -48,6 +51,10 @@ public class EnchanteSubplugin extends ModuleBasedSubplugin  {
         return (BetterAnvilConfig) getModuleConfig(MODULE_ID_BETTERANVIL);
     }
 
+    public TweaksConfig getTweaksConfig() {
+        return (TweaksConfig) getModuleConfig(MODULE_ID_TWEAKS);
+    }
+
 
     @Override
     public String getName() {
@@ -68,6 +75,7 @@ public class EnchanteSubplugin extends ModuleBasedSubplugin  {
     protected Map<String, List<Listener>> createModulesListeners() {
         Map<String, List<Listener>> map = new HashMap<>();
         map.put(MODULE_ID_BETTERANVIL, List.of(new BetterAnvilListener()));
+        map.put(MODULE_ID_TWEAKS, List.of(new TweaksListener()));
         return map;
     }
 
@@ -75,6 +83,7 @@ public class EnchanteSubplugin extends ModuleBasedSubplugin  {
     protected Map<String, Config> createModulesConfigs() {
         Map<String, Config> map = new HashMap<>();
         map.put(MODULE_ID_BETTERANVIL, new BetterAnvilConfig(getMainConfig().getConfig()));
+        map.put(MODULE_ID_TWEAKS, new TweaksConfig(getMainConfig().getConfig()));
         return map;
     }
 

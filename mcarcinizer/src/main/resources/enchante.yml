@@ -1,5 +1,10 @@
 plugin_enabled: true
 
+tweaks:
+    enabled: true
+    mending_bound_enchants:
+        - vanishing_curse
+
 better_anvil:
     enabled: true
 
@@ -10,6 +15,25 @@ better_anvil:
             reduction: 1    # how much levels does it remove
             cost: 5         # how much does it cost to remove them
             count: 2        # how many items required for it
+
+
+    # --- marker ---
+    # name: str (name of the marker, optional)
+    # names: dict[lvl,str] (name of the marker passed lvl X)
+    # cap: max marker lvl
+    # cap_blocked_categories: list (list of attchantment categories that gets blocked once the cap is reached)
+    # cap_whitelisted_categories: list (list of attchantment categories that are whitelisted once the cap is reached)
+    # block
+    markers:
+        SPEED:
+            names: {
+                0: '{LVL}000-legged creature',
+                5: '{LVL}000-legged monster',
+                10: 'Eternal Centipede'}
+            cap: 10
+            cap_blocked_categories: [default]
+            cap_whitelisted_categories: [default]
+            cap_lists_priority: 1
 
     # --- attribute enchant parameters ---
     # type: mult/add
