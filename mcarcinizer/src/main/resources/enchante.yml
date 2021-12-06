@@ -11,6 +11,18 @@ better_anvil:
             cost: 5         # how much does it cost to remove them
             count: 2        # how many items required for it
 
+    # lore: String (line of lore that will be added to the object)
+    # stacking: boolean (default=true)(allow attchantment with this honor when the item already has it ?)
+
+    item_honors:
+        speed_bonus:
+            lore: '☖ {LVL}000-legged creature ☖'
+            stacking: true
+        heart_bonus:
+            lore: '♡ Unwavering Heart ♡'
+        ultimate:
+            lore: '★ Ultimate ★'
+
     # --- attribute enchant parameters ---
     # type: mult/add
     # slot: (default: no restriction) https://hub.spigotmc.org/javadocs/spigot/org/bukkit/inventory/EquipmentSlot.html
@@ -56,6 +68,7 @@ better_anvil:
                 deviation: 0.005
                 cumulation: CURRENT + ((1+pos(CURRENT)) * BONUS)
                 works_on: [OBJECTS,WEAPONS,TOOLS,RANGED_WEAPONS,ARMORS]
+                conflicts: [ultimate]
         HEART_OF_THE_SEA:
             main_health:
                 type: add
@@ -67,6 +80,7 @@ better_anvil:
                 value: 1
                 deviation: 0.2
                 cumulation: CURRENT + BONUS
+                conflicts: [ultimate]
             sub_feet_speed:
                 type: mult
                 slot: FEET
@@ -76,6 +90,7 @@ better_anvil:
                 deviation: 0.01
                 cumulation: CURRENT + ((1+pos(CURRENT)) * BONUS)
                 probability: 0.4
+                conflicts: [ultimate]
         GLOW_INK_SAC:
             main:
                 type: add
@@ -86,3 +101,4 @@ better_anvil:
                 count: 1
                 value: 2
                 deviation: 0.3
+                conflicts: [ultimate]
