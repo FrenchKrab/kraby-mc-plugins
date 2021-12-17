@@ -1,5 +1,10 @@
 plugin_enabled: true
 
+tweaks:
+    enabled: true
+    mending_bound_enchants:
+        - vanishing_curse
+
 better_anvil:
     enabled: true
 
@@ -14,10 +19,13 @@ better_anvil:
     # lore: String (line of lore that will be added to the object)
     # stacking: boolean (default=true)(allow attchantment with this honor when the item already has it ?)
 
-    item_honors:
+    markers:
         speed_bonus:
-            lore: '☖ {LVL}000-legged creature ☖'
-            stacking: true
+            lore: {
+                0: '☖ {LVL}000-legged creature ☖',
+                5: '☖ {LVL}000-legged monster ☖',
+                10: '☖ Eternal Centipede ☖'}
+            cap: 10
         heart_bonus:
             lore: '♡ Unwavering Heart ♡'
         ultimate:
@@ -68,7 +76,9 @@ better_anvil:
                 deviation: 0.005
                 cumulation: CURRENT + ((1+pos(CURRENT)) * BONUS)
                 works_on: [OBJECTS,WEAPONS,TOOLS,RANGED_WEAPONS,ARMORS]
-                conflicts: [ultimate]
+                slot: ANY
+                conflicts: [lock]
+                reroll: ATTCHANT_COUNT_ITEM
         HEART_OF_THE_SEA:
             main_health:
                 type: add
@@ -80,7 +90,7 @@ better_anvil:
                 value: 1
                 deviation: 0.2
                 cumulation: CURRENT + BONUS
-                conflicts: [ultimate]
+                conflicts: [lock]
             sub_feet_speed:
                 type: mult
                 slot: FEET
@@ -90,7 +100,7 @@ better_anvil:
                 deviation: 0.01
                 cumulation: CURRENT + ((1+pos(CURRENT)) * BONUS)
                 probability: 0.4
-                conflicts: [ultimate]
+                conflicts: [lock]
         GLOW_INK_SAC:
             main:
                 type: add
@@ -101,4 +111,4 @@ better_anvil:
                 count: 1
                 value: 2
                 deviation: 0.3
-                conflicts: [ultimate]
+                conflicts: [lock]

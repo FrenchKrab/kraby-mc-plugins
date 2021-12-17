@@ -31,6 +31,9 @@ public class ItemAttributeEnchanterData {
     private static final String CFG_ATTCHANT_MAX_REPAIR = "max_repair_cost";
     private static final String CFG_ATTCHANT_WORKS_ON = "works_on";
 
+    private static final String DEFAULT_CUMULATION_FORMULA_ADD = "CURRENT + BONUS";
+    private static final String DEFAULT_CUMULATION_FORMULA_MULT = 
+        "CURRENT + ((1+pos(CURRENT)) * BONUS)";
 
     public final Operation operation;
     public final Attribute attribute;
@@ -62,7 +65,7 @@ public class ItemAttributeEnchanterData {
         this.operation = readOperation();
         this.attribute = readAttribute();
         this.enchantment = readEnchantment();
-        this.value = section.getDouble(CFG_ATTCHANT_VALUE, 0);
+        this.value = section.getDouble(CFG_ATTCHANT_VALUE, 1.0);
         this.cost = section.getInt(CFG_ATTCHANT_COST, 0);
         this.repairRaise = section.getInt(CFG_ATTCHANT_REPAIRRAISE, 0);
         this.count = section.getInt(CFG_ATTCHANT_COUNT, 1);
@@ -127,7 +130,11 @@ public class ItemAttributeEnchanterData {
 
 
     private ExpressionEvaluator readCumulationFormula() {
-        String exprString = section.getString(CFG_ATTCHANT_CUMULATION, "0.404");
+        String defaultValue = DEFAULT_CUMULATION_FORMULA_ADD;
+        if (this.operation == Operation.MULTIPLY_SCALAR_1)
+            defaultValue = DEFAULT_CUMULATION_FORMULA_MULT;
+
+        String exprString = section.getString(CFG_ATTCHANT_CUMULATION, defaultValue);
         return new Exp4jEvaluator(exprString);
     }
 
