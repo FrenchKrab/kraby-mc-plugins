@@ -7,8 +7,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
-import com.kraby.mcarcinizer.CarcinizerMain;
-
 import org.bukkit.Material;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeModifier;

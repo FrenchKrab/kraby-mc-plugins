@@ -27,6 +27,7 @@ import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.inventory.ItemStack;
 
 public class ClassicDkListener implements Listener {
+    private static final int DK_SPAWN_DELAY = 3;
 
 
     @EventHandler(priority = EventPriority.NORMAL)
@@ -49,15 +50,21 @@ public class ClassicDkListener implements Listener {
         final double attack = config.getDeathKeeperAttack(deathKeeperLevel);
         final double speed = config.getDeathKeeperSpeed(deathKeeperLevel);
 
-        new ClassicDkBuilder()
-            .withArmor(p.getEquipment().getArmorContents())
-            .withInventory(inventory)
-            .withAttack(attack)
-            .withSpeed(speed)
-            .withLife(newLife)
-            .withOwner(p.getName())
-            .withLevel((long)deathKeeperLevel)
-            .spawnAt(EntityType.WITHER_SKELETON, p.getLocation());
+        // Spawn the deathkeeper a few tick later to avoid strange double kills 
+        Bukkit.getScheduler().runTaskLater(
+            CarcinizerMain.getSingleton(),
+            () -> 
+                new ClassicDkBuilder()
+                .withArmor(p.getEquipment().getArmorContents())
+                .withInventory(inventory)
+                .withAttack(attack)
+                .withSpeed(speed)
+                .withLife(newLife)
+                .withOwner(p.getName())
+                .withLevel((long)deathKeeperLevel)
+                .spawnAt(EntityType.WITHER_SKELETON, p.getLocation()),
+            DK_SPAWN_DELAY
+        );
 
         e.getDrops().clear();
 

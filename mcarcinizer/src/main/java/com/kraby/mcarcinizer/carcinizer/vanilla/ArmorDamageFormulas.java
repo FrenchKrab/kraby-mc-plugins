@@ -1,6 +1,5 @@
 package com.kraby.mcarcinizer.carcinizer.vanilla;
 
-import com.kraby.mcarcinizer.CarcinizerMain;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
