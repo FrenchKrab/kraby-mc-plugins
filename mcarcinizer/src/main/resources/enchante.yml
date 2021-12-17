@@ -1,10 +1,5 @@
 plugin_enabled: true
 
-tweaks:
-    enabled: true
-    mending_bound_enchants:
-        - vanishing_curse
-
 better_anvil:
     enabled: true
 
@@ -16,54 +11,55 @@ better_anvil:
             cost: 5         # how much does it cost to remove them
             count: 2        # how many items required for it
 
+    # lore: String (line of lore that will be added to the object)
+    # stacking: boolean (default=true)(allow attchantment with this honor when the item already has it ?)
 
-    # --- marker ---
-    # name: str (name of the marker, optional)
-    # names: dict[lvl,str] (name of the marker passed lvl X)
-    # cap: max marker lvl
-    # cap_blocked_categories: list (list of attchantment categories that gets blocked once the cap is reached)
-    # cap_whitelisted_categories: list (list of attchantment categories that are whitelisted once the cap is reached)
-    # block
-    markers:
-        SPEED:
-            names: {
-                0: '{LVL}000-legged creature',
-                5: '{LVL}000-legged monster',
-                10: 'Eternal Centipede'}
-            cap: 10
-            cap_blocked_categories: [default]
-            cap_whitelisted_categories: [default]
-            cap_lists_priority: 1
+    item_honors:
+        speed_bonus:
+            lore: '☖ {LVL}000-legged creature ☖'
+            stacking: true
+        heart_bonus:
+            lore: '♡ Unwavering Heart ♡'
+        ultimate:
+            lore: '★ Ultimate ★'
 
     # --- attribute enchant parameters ---
     # type: mult/add
-    # slot: https://hub.spigotmc.org/javadocs/spigot/org/bukkit/inventory/EquipmentSlot.html (default: no restriction)
+    # slot: (default: no restriction) https://hub.spigotmc.org/javadocs/spigot/org/bukkit/inventory/EquipmentSlot.html
     # attribute:    https://hub.spigotmc.org/javadocs/spigot/org/bukkit/attribute/Attribute.html
-    # cost: integer     (only used if force_cost is true, fixed cost value)
+    # cost: integer     (default: 0) (only used if force_cost is true, fixed cost value)
     # force_cost: boolean (default: false)
-    # repair_raise: integer (default: 1) (how much this enchant raises the cost value)
+    # repair_raise: integer (default: 0) (how much this enchant raises the cost value)
     # count: integer    (default: 1) (how many items needed to trigger this attribute enchantment)
     # value: float      (how much does it add ? Straightforward in case of 'add' type. In case of 'mult' type: 0.15 = +15%, -1.6=-160%)
     # deviation: float  (default: 0.0)(the standard deviation/sigma to introduce random in the value. set to 0 to disable)
     # cumulation: formula   (default: 0.404)(how to merge the old bonus with new bonus)
     # probability: float    (default: 1.0) (chance of the attribute appearing)
-    # reroll: NO_LIMIT/ITEM_CHANGED/ATTCHANT_COUNT_ITEM (behaviour for rerolling the attributes)
+    # reroll: NO_LIMIT/ITEM_CHANGED/ATTCHANT_COUNT_ITEM (default:ATTCHANT_COUNT_ITEM) (behaviour for rerolling the attributes)
     # min_repair_cost: integer (default: 0) (minimal level for this attribute to be available (included))
     # min_repair_cost: integer (default: +infinity)(maximal level for this attribute to be available (included))
+    # works_on: list of strings (default: [WEAPONS, TOOLS, ARMORS])
 
     # --- attribute enchant details ---
     # Deviation : See wikipedia diagram. With a value=0.6 and a deviation=0.1 you'll roughly get values between 0.3 and 0.9 with most values being centered around 0.6 (68% of the values between 0.5 & 0.7) https://en.wikipedia.org/wiki/Normal_distribution#/media/File:Standard_deviation_diagram.svg
     # Cumulation : variables: CURRENT=current bonus of the attribute, BONUS=new bonus chosen from value w/ deviation
-    # Reroll:   NO_LIMIT = rerolled each time the consumable is put in the anvil)
+    # Reroll:   NO_LIMIT = rerolled each time the consumable is put in the anvil
     #           ITEM_CHANGED = rerolled each time the item changes (enchant, name, attributes))
     #           ATTCHANT_COUNT_ITEM = rerolled each time the item is attribute enchanted
+    # works_on : can be specific object names aswell as predefined categories. List of predefined categories :
+    #       ALL: anything
+    #       OBJECTS: any item that isn't a weapon/tool/armor
+    #       WEAPONS: any weapon (swords, trident, bow, ...)
+    #       ARMORS: any piece of armor
+    #       TOOLS: any tool (shovel, pickaxe, axe, hoe)
+    #       SHOVEL, PICKAXE, ...: any tier of weapon (wooden, stone, ...) of a given item category
+    #       example of specific objects: DIRT, PHANTOM_MEMBRANE, ... (see link to "Material" spigot page)
 
     attribute_enchants:
         PHANTOM_MEMBRANE:
-            0:
+            main_speed:
                 type: mult
-                slot: ANY
-                attribute: GENERIC_MOVEMENT_SPEED
+                effect: GENERIC_MOVEMENT_SPEED
                 cost: 5
                 force_cost: true
                 repair_raise: 5
@@ -71,13 +67,12 @@ better_anvil:
                 value: 0.03
                 deviation: 0.005
                 cumulation: CURRENT + ((1+pos(CURRENT)) * BONUS)
-                probability: 1.0
-                reroll: ATTCHANT_COUNT_ITEM
+                works_on: [OBJECTS,WEAPONS,TOOLS,RANGED_WEAPONS,ARMORS]
+                conflicts: [ultimate]
         HEART_OF_THE_SEA:
-            0:
+            main_health:
                 type: add
-                slot: ANY
-                attribute: GENERIC_MAX_HEALTH
+                effect: GENERIC_MAX_HEALTH
                 cost: 10
                 force_cost: true
                 repair_raise: 10
@@ -85,18 +80,25 @@ better_anvil:
                 value: 1
                 deviation: 0.2
                 cumulation: CURRENT + BONUS
-                probability: 1.0
-                reroll: ITEM_CHANGED
-            1:
+                conflicts: [ultimate]
+            sub_feet_speed:
                 type: mult
                 slot: FEET
-                attribute: GENERIC_MOVEMENT_SPEED
-                cost: 0
-                force_cost: false
-                repair_raise: 0
+                effect: GENERIC_MOVEMENT_SPEED
                 count: 1
                 value: -0.02
                 deviation: 0.01
                 cumulation: CURRENT + ((1+pos(CURRENT)) * BONUS)
                 probability: 0.4
-                reroll: ITEM_CHANGED
+                conflicts: [ultimate]
+        GLOW_INK_SAC:
+            main:
+                type: add
+                effect: sharpness
+                cost: 10
+                force_cost: true
+                repair_raise: 10
+                count: 1
+                value: 2
+                deviation: 0.3
+                conflicts: [ultimate]

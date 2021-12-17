@@ -5,8 +5,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.UUID;
+import java.util.Locale.Category;
 
 import com.kraby.mcarcinizer.carcinizer.expressions.ExpressionEvaluator;
+import com.kraby.mcarcinizer.carcinizer.utils.ItemCategoryChecker;
 import com.kraby.mcarcinizer.carcinizer.vanilla.ItemsDefaultAttributes;
 import com.kraby.mcarcinizer.enchante.EnchanteSubplugin;
 import com.kraby.mcarcinizer.enchante.betteranvil.CustomEnchantSeed;
@@ -18,6 +20,7 @@ import com.kraby.mcarcinizer.enchante.config.betteranvil.ItemRepairCostReducerDa
 import org.bukkit.Material;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeModifier;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.PrepareAnvilEvent;
@@ -125,6 +128,10 @@ public class BetterAnvilListener implements Listener {
             return false;
         }
 
+        // Enchantment applyable only if the object fits the required category
+        if (!ItemCategoryChecker.isItemInOneCategory(result.getType(), attData.worksOn))
+            return false;
+
 
         Random r = new Random();
         switch (attData.rerollBehaviour) {
@@ -148,7 +155,12 @@ public class BetterAnvilListener implements Listener {
 
         double valueBonus = attData.value + r.nextGaussian() * attData.deviation;
 
-        addOrMergeAttributeChange(result.getType(), newMeta, attData, valueBonus, targetSlot);
+        if (attData.attribute != null) {
+            addOrMergeAttributeChange(result.getType(), newMeta, attData, valueBonus, targetSlot);
+        } else if (attData.enchantment != null) {
+            int intBonus = (int)Math.round(valueBonus);
+            addOrMergeEnchant(attData, newMeta, intBonus);
+        }
 
         int repairCost;
         if (!attData.forceCost && newMeta instanceof Repairable) {
@@ -167,6 +179,17 @@ public class BetterAnvilListener implements Listener {
         return true;
     }
 
+
+    private static void addOrMergeEnchant(
+            ItemAttributeEnchanterData attData,
+            ItemMeta meta,
+            int bonus) {
+        //
+        Enchantment enchant = attData.enchantment;
+        int newLevel = meta.hasEnchant(enchant) ? meta.getEnchantLevel(enchant) : 0;
+        newLevel += bonus;
+        meta.addEnchant(enchant, newLevel, true);
+    }
 
     private static void addOrMergeAttributeChange(
             Material mat,
