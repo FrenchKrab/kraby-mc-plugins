@@ -1,0 +1,8 @@
+plugin_enabled: true
+
+mobfarms:
+  enabled: true
+
+  wither:
+    cancel_suffocate_damage: false
+    suffocate_teleport_radius: 0.1
